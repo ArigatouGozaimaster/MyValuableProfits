@@ -5,3 +5,5 @@ flask_bcrypt
 flask_wtf
 wtforms
 requests
+yfinance
+pandas_datareader

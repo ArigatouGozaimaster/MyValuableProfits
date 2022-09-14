@@ -5,6 +5,7 @@
 import os
 import datetime
 import yfinance as yf
+from pandas_datareader import data
 
 from flask import Flask, flash, render_template, url_for, redirect, request, session
 from flask_session import Session
@@ -19,7 +20,9 @@ from flask_bcrypt import Bcrypt
 
 ### Configure applications ###
 
-
+# Get exchange rate data
+jpy = data.DataReader('DEXUSAL', 'fred')
+# print(jpy)
 
 # Initialise
 app = Flask(__name__)
