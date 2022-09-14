@@ -80,7 +80,7 @@ class LoginForm(FlaskForm):
 
 ### App.Route ###
 
-
+U = None
 
 @app.route('/')
 def home():
@@ -95,10 +95,11 @@ def login():
     """ Show the login page and prompt the user to login """
 
     form = LoginForm()
-
+    global U
     # Login Validation via POST request
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+        U = form.username.data
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
@@ -142,7 +143,7 @@ def dashboard():
     """ Stock Portfolio Dashboard - Implement Majority of code HERE"""
 
     # TODO:
-    return render_template('dashboard.html', user=user)
+    return render_template('dashboard.html', user=U)
 
 
 if __name__ == '__main__':
