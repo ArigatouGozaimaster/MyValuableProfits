@@ -2,6 +2,7 @@
 
 import os
 import datetime
+import yfinance as yf
 
 from flask import Flask, flash, render_template, url_for, redirect, request, session
 from flask_session import Session
