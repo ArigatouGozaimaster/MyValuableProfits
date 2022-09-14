@@ -1,3 +1,5 @@
+### Importing libraries required ###
+
 import os
 import datetime
 
@@ -12,7 +14,11 @@ from flask_bcrypt import Bcrypt
 
 
 
-# Configure applications
+### Configure applications ###
+
+
+
+# Create App
 app = Flask(__name__)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -20,9 +26,15 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = '$a1teDP@$$w0rd15Very1MP0Rtant'
 
+# Login Manager
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
+# Reload the user's object from the user's session
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 # Configure database.db
 class User(db.Model, UserMixin):
@@ -45,12 +57,16 @@ class RegisterForm(FlaskForm):
 
 # Login for an account
 class LoginForm(FlaskForm):
+
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
     
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
     
     submit = SubmitField("Login")
 
+
+
+### App.Route ###
 
 
 
