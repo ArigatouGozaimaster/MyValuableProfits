@@ -1,0 +1,7 @@
+Flask
+Flask-Session
+Flask_sqlalchemy
+flask_bcrypt
+flask_wtf
+wtforms
+requests
