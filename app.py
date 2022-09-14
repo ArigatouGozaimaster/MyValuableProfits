@@ -1,5 +1,7 @@
 ### Importing libraries required ###
 
+
+
 import os
 import datetime
 import yfinance as yf
@@ -140,7 +142,7 @@ def dashboard():
     """ Stock Portfolio Dashboard - Implement Majority of code HERE"""
 
     # TODO:
-    return render_template('dashboard.html')
+    return render_template('dashboard.html', user=user)
 
 
 if __name__ == '__main__':
