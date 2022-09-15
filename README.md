@@ -3,24 +3,30 @@
 ## Description
 
 ### Who is MVP?
-MyValuableProfits (MVP) is a non-profit website where you can cherish your gains as a fellow Aussie stock trader.
+Welcome to MyValuableProfits (MVP), a not-for-profit website where you can track and cherish your gains as a fellow Aussie stock trader on the ASX and NASDAQ markets.
 
 ### What is MVP?
-Welcome to MyValuableProfits (MVP), a CS50x Final Project inspired by C$50's Finance Pset and brought to life by our own personal need for a flexible and fully customisable stock portfolio tracker. 
+MVP is a CS50x Final Project inspired by C$50's Finance Pset and brought to life by our own personal need for a flexible fully customisable stock portfolio tracker (that is also free! More on this later). 
+
+Current statistics of MVP:
+
+1% Python :
+1% HTML :
+1% CSS :
+100% MVP
+
 
 ### When is MVP?
-While many websites out there exist such as Sharesight, our goal is to say NO to the monetisation of such a simple yet essential tracker. We firmly believe this solves the problem of worldwide capitalism exploiting the lazy people who subscribe to paid websites such as Sharesight, and as a result, the charity that MVP provides means we expect to win our very own Nobel Peace Prize any day from now. 
+We're currently not sure. Make sure to smash that subscribe button and hit the notification bell to keep up with the latest news!
 
 ### Where is MVP?
-[sensitive]
+Rumors say MVP is currently finding the best gym equipment in town!
 
 ### Why is MVP?
-The aim of this project was to practice CRUD (Create, Read, Update, Destroy) with SQL and Panda dataframes, and have a fully functioning, online, and open-source website for all users to traverse. The vast majority of this project have been written with Python, Flask, HTML, and CSS.  
+The aim of this project was to practice CRUD (Create, Read, Update, Destroy) with SQL and Panda dataframes, and have a fully functioning, online, and open-source website for all users to traverse. While many websites out there exist such as Sharesight, our goal is to say NO to the monetisation of such a simple yet essential life changing tool. We firmly believe this solves the problem of worldwide capitalism exploiting the lazy people who subscribe to paid websites such as Sharesight, and as a result, the charity that MVP provides means we expect to win our very own Nobel Peace Prize very shortly.   
 
 
 ## Table of Contents 
-
-If your README is long, add a table of contents to make it easy for users to find what they need.
 
 - [Installation](#installation)
 - [Usage](#usage)
