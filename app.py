@@ -9,8 +9,9 @@ under requirements.txt. For more details, consult the attached ReadMe.md
 import os
 import datetime
 import yfinance as yf
-from pandas_datareader import data
+import sqlite3
 
+from pandas_datareader import data
 from flask import Flask, render_template, url_for, redirect, request, session, flash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
@@ -29,6 +30,7 @@ A list of pre-requisites for functionality
 - Ensure templates are auto-reloaded
 - Configure session to use filesystem (instead of signed cookies)
 - Prepare Database
+- Link Database to SQLite3
 - Login Manager
 - Reload the user's object from the user's session
 - Configure database.db
@@ -53,6 +55,10 @@ Session(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = '$a1teDP@$$w0rd15Very1MP0Rtant'
 
+# Link Database to SQLite3
+con = sqlite3.connect("database.db")
+cur = con.cursor()
+
 # Login Manager
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -63,7 +69,7 @@ login_manager.login_view = "login"
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# Configure database.db
+# Configure "user" table in database.db
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(20), nullable = False, unique = True)

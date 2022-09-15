@@ -1,6 +1,9 @@
 import yfinance as yf
+import sqlite3
 from datetime import date
 from pandas_datareader import data
+
+from app import price_fetch
 
 """
 Testing
@@ -43,4 +46,21 @@ def historic_exchange_rate(purchase_date):
     return value
 
 print(historic_exchange_rate("2020-03-27"))
+"""
+
+# Update database.db
+"""
+con = sqlite3.connect("database.db")
+cur = con.cursor()
+
+CREATE TABLE portfolio(
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    ticker TEXT NOT NULL,
+    quantity NUMERIC NOT NULL,
+    purchaseprice NUMERIC NOT NULL,
+    date NUMERIC NOT NULL,
+    buysell TEXT NOT NULL
+    );
+DROP TABLE portfolio;
 """
