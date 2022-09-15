@@ -13,26 +13,34 @@ Testing
 
 # Fetching Current Real-Time Exchange Rate (USD/AUD) 
 """
-AUD = data.DataReader('DEXUSAL', 'fred')
-a = AUD.DEXUSAL.iat[-1]
-
+def current_rate():
+    AUD = data.DataReader('DEXUSAL', 'fred')
+    current_exchange_rate = AUD.DEXUSAL.iat[-1]
+    return current_exchange_rate
 """
 
-# Importing Stock Data based on Ticker
+# Importing Stock Data based on Ticker (Dependant on current_rate)
 """
-stock = "aapl"
-ticker = yf.Ticker(str(stock).upper())
-if ticker.info['regularMarketPrice'] is None:
-    print("Undefined")
-elif ".ax" in stock:
-    print(round(ticker.info['regularMarketPrice'], 2))
-else:
-    print(round(ticker.info['regularMarketPrice'] / a, 2))
+def price_fetch(stock):
+    ticker = yf.Ticker(str(stock).upper())
+    if ticker.info['regularMarketPrice'] is None:
+        return ValueError
+
+    elif ".ax" in stock:
+        return round(ticker.info['regularMarketPrice'], 2)
+
+    else:
+        return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
+
+print(price_fetch("aapdsal"))
 """
 
 # Fetching an Exchange Rate from the past 1300 days (LIMIT)
-""""""
-today = date.today()
-print(today)
+"""
+def historic_exchange_rate(purchase_date):
+    df = data.DataReader('DEXUSAL', 'fred')
+    value = df.loc[purchase_date, 'DEXUSAL']
+    return value
 
-AUD = data.DataReader('DEXUSAL', 'fred')
+print(historic_exchange_rate("2020-03-27"))
+"""
