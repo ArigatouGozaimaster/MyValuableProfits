@@ -13,7 +13,6 @@ Testing
 - Fetching an Exchange Rate from the past 1300 days (LIMIT)
 """
 
-
 # Fetching Current Real-Time Exchange Rate (USD/AUD) 
 """
 def current_rate():
@@ -35,7 +34,7 @@ def price_fetch(stock):
     else:
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
 
-print(price_fetch("aapdsal"))
+print(price_fetch("qan.ax"))
 """
 
 # Fetching an Exchange Rate from the past 1300 days (LIMIT)
