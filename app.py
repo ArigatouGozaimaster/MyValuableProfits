@@ -1,5 +1,10 @@
-### Importing libraries required ###
+"""
+Importing Libraries
+-------------------
 
+Import the necessary libraries for the program to run. A full list of requirements can be found 
+under requirements.txt
+"""
 
 
 import os
@@ -16,13 +21,32 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 
+"""
+Configure Applications
+----------------------
 
+A list of helper functions are listed under this category.
+- Exchange Rate API Data
+- Check Ticker from YFinance API
+- Initialisation of Flask, SQL, Bcrypt(password encryption)
+- Sessions to utilise local filesystems (instead of signed cookies)
+- Login Manager and Register/Login user templates
+"""
 
-### Configure applications ###
 
 # Get exchange rate data
-jpy = data.DataReader('DEXUSAL', 'fred')
-# print(jpy)
+AUD = data.DataReader('DEXUSAL', 'fred')
+
+# Helper functions:
+# yFinance: Stock current price, Company name, 
+# User inputs: ticker, time, quantity, price bought
+def checkTicker( input_ticker ):
+    ticker = yf.Ticker(input_ticker)
+    curr_price = ticker.info['regularMarketPrice']
+    if curr_price is None:
+        return False
+    else: 
+        return True
 
 # Initialise
 app = Flask(__name__)
@@ -79,11 +103,21 @@ class LoginForm(FlaskForm):
     
     submit = SubmitField("Login")
 
-
-
-### App.Route ###
-
+# Global Variables
 U = None
+
+
+"""
+App.Route
+---------
+The backend of all url routing including:
+- Home (/)
+- Login (/login)
+- Register (/register)
+- Logout (/logout)
+- Dashboard (/dashboard)
+"""
+
 
 @app.route('/')
 def home():
@@ -148,19 +182,6 @@ def dashboard():
     # TODO:
     return render_template('dashboard.html', user=U)
 
-
-
-# Helper functions:
-def checkTicker( input_ticker ):
-    ticker = yf.Ticker(input_ticker)
-    curr_price = ticker.info['regularMarketPrice']
-    if curr_price is None:
-        return False
-    else: 
-        return True
-
-# yFinance: Stock current price, Company name, 
-# User inputs: ticker, time, quantity, price bought
 
 # Main
 
