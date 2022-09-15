@@ -3,16 +3,15 @@ Importing Libraries
 -------------------
 
 Import the necessary libraries for the program to run. A full list of requirements can be found 
-under requirements.txt
+under requirements.txt. For more details, consult the attached ReadMe.md
 """
-
 
 import os
 import datetime
 import yfinance as yf
 from pandas_datareader import data
 
-from flask import Flask, flash, render_template, url_for, redirect, request, session
+from flask import Flask, render_template, url_for, redirect, request, session, flash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
@@ -25,30 +24,19 @@ from flask_bcrypt import Bcrypt
 Configure Applications
 ----------------------
 
-A list of helper functions are listed under this category.
-- Exchange Rate API Data
-- Check Ticker from YFinance API
-- Initialisation of Flask, SQL, Bcrypt(password encryption)
-- Sessions to utilise local filesystems (instead of signed cookies)
-- Login Manager and Register/Login user templates
+A list of pre-requisites for functionality
+- Initialisation of Flask constructor module, SQLAlchemy, and Bcrypt
+- Ensure templates are auto-reloaded
+- Configure session to use filesystem (instead of signed cookies)
+- Prepare Database
+- Login Manager
+- Reload the user's object from the user's session
+- Configure database.db
+- Register for an account
+- Register for an account
 """
 
-
-# Get exchange rate data
-AUD = data.DataReader('DEXUSAL', 'fred')
-
-# Helper functions:
-# yFinance: Stock current price, Company name, 
-# User inputs: ticker, time, quantity, price bought
-def checkTicker( input_ticker ):
-    ticker = yf.Ticker(input_ticker)
-    curr_price = ticker.info['regularMarketPrice']
-    if curr_price is None:
-        return False
-    else: 
-        return True
-
-# Initialise
+# Initialisation of Flask constructor module, SQLAlchemy, and Bcrypt
 app = Flask(__name__)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -103,6 +91,39 @@ class LoginForm(FlaskForm):
     
     submit = SubmitField("Login")
 
+
+"""
+Helper Functions
+----------------
+
+A list of helper functions for the functionality of the website
+- Get LIVE Exchange Rate Data 
+- Fetch LIVE Stock Price (YFinance)
+- Global Variables
+"""
+
+# Get LIVE Exchange Rate Data
+def current_rate():
+    AUD = data.DataReader('DEXUSAL', 'fred')
+    current_exchange_rate = AUD.DEXUSAL.iat[-1]
+    return current_exchange_rate
+
+# Fetch LIVE Stock Price (YFinance)
+def price_fetch(stock):
+    ticker = yf.Ticker(str(stock).upper())
+    
+    # if ticker does not exist:
+    if ticker.info['regularMarketPrice'] is None:
+        return ValueError
+
+    # if ticker is Australian
+    elif ".ax" in stock:
+        return round(ticker.info['regularMarketPrice'], 2)
+
+    # if ticker is NASDAQ, convert to AUD
+    else:
+        return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
+
 # Global Variables
 U = None
 
@@ -111,7 +132,7 @@ U = None
 App.Route
 ---------
 The backend of all url routing including:
-- Home (/)
+- Landing Page (/)
 - Login (/login)
 - Register (/register)
 - Logout (/logout)
@@ -181,9 +202,6 @@ def dashboard():
 
     # TODO:
     return render_template('dashboard.html', user=U)
-
-
-# Main
 
 if __name__ == '__main__':
     app.run(debug=True)
