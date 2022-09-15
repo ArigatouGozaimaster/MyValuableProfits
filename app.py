@@ -149,6 +149,20 @@ def dashboard():
     return render_template('dashboard.html', user=U)
 
 
+
+# Helper functions:
+def checkTicker( input_ticker ):
+    ticker = yf.Ticker(input_ticker)
+    curr_price = ticker.info['regularMarketPrice']
+    if curr_price is None:
+        return False
+    else: 
+        return True
+
+# yFinance: Stock current price, Company name, 
+# User inputs: ticker, time, quantity, price bought
+
+# Main
+
 if __name__ == '__main__':
     app.run(debug=True)
-
