@@ -38,12 +38,9 @@ A list of pre-requisites for functionality
 - Register for an account
 """
 
-# Initialisation of Flask constructor module, SQLAlchemy, and Bcrypt
+# Initialisation of Flask constructor module and Bcrypt
 app = Flask(__name__, static_url_path='/static')
 bcrypt = Bcrypt(app)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-db = SQLAlchemy(app)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -54,8 +51,10 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Prepare Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = '$a1teDP@$$w0rd15Very1MP0Rtant'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db = SQLAlchemy(app)
 
 # Link Database to SQLite3
 con = sqlite3.connect("database.db")
@@ -145,6 +144,7 @@ The backend of all url routing including:
 - Register (/register)
 - Logout (/logout)
 - Dashboard (/dashboard)
+- Buy (/buy)
 """
 
 
@@ -211,6 +211,7 @@ def dashboard():
     # TODO:
     return render_template('dashboard.html', user=U)
 
+<<<<<<< HEAD
 @app.route('/handle_buy', methods=['POST'])
 def handle_buy():
     formdata = request.form
@@ -224,6 +225,38 @@ def handle_buy():
     
     # TODO: process formdata
 
+=======
+
+@app.route('/buy', methods=['GET', 'POST'])
+@login_required
+def buy():
+
+    # Fetch information from form
+    if request.method == 'POST':
+        ticker = request.form.get("symbol")
+        price = request.form.get("price")
+        amount = request.form.get("amount")
+        date = request.form.get("date")
+        brokerage = request.form.get("brokerage")
+
+        # Check validity of "Ticker"
+        if price_fetch(ticker) is ValueError:
+            return render_template("error.html")
+
+        # Check validity of "Price"
+        if price.isdecimal() is False:
+            return render_template("error.html")
+        
+        # Check validity of "Amount"
+        if amount.isdecimal() is False:
+            return render_template("error.html")
+
+        # Check validity of "Brokerage"
+        if brokerage.isdecimal() is False:
+            return render_template("error.html")
+
+    # TODO:
+>>>>>>> eeb3403fa83b3e6089fb21ca644d71cf40e71b94
     return render_template('dashboard.html', user=U)
 
 
