@@ -1,6 +1,8 @@
 body {
   margin: 0;
   margin-top: 50px;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
 }
 
 header {
@@ -35,11 +37,45 @@ h2 {
 }
 
 #table-container {
-  background-color: grey;
+  /* background-color: grey; */
   margin-inline: 15%;
-  text-align: center;
+  text-align: left;
 }
 
 table {
   width: 100%;
+  font-size: 0.9em;
+  min-width: 500px;
+  border-collapse: collapse;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 3px 0 8px rgba(0,0,0,0.2), -3px 0 8px rgba(0,0,0,0.2);
+}
+
+thead {
+  background-color: crimson;
+}
+
+th {
+  color: white;
+  font-size: 16px;
+  padding: 10px 12px;
+
+}
+
+td {
+  padding: 10px 12px;
+}
+
+tr {
+  border-bottom: 1px solid grey;
+}
+
+tr:nth-of-type(even) {
+  background-color: rgb(240,240,240);
+}
+
+tr:last-of-type {
+  border-bottom: 2px solid crimson;
+
 }
