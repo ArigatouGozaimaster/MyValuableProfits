@@ -214,11 +214,16 @@ def dashboard():
 @app.route('/handle_buy', methods=['POST'])
 def handle_buy():
     formdata = request.form
-    print(formdata)
-    # Formdata is an: 
-    #immutableMultiDict([('ticker', 'QAN'), ('price', '90'), ... ])
-    # TODO: process formdata
+
+    input_ticker = formdata['ticker']
+    input_price = formdata['price']
+    input_date = formdata['date']
+    input_brokerage = formdata['brokerage']
+
+    print("INPUT:", input_ticker, input_price, input_date, input_brokerage)
     
+    # TODO: process formdata
+
     return render_template('dashboard.html', user=U)
 
 
