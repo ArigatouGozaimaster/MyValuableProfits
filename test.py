@@ -58,21 +58,12 @@ CREATE TABLE portfolio(
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     ticker TEXT NOT NULL,
+    name TEXT NOT NULL,
+    market TEXT NOT NULL,
+    avgprice NUMERIC NOT NULL,
     quantity NUMERIC NOT NULL,
-    purchaseprice NUMERIC NOT NULL,
-    date NUMERIC NOT NULL,
+    brokerage NUMERIC NOT NULL,
     buysell TEXT NOT NULL
     );
 DROP TABLE portfolio;
 """
-
-# ticker = yf.Ticker("QAN.AX")
-# str(stock).upper()
-# curr_price = ticker.info['regularMarketPrice']
-# if curr_price is None:
-#     print("False")
-# else: 
-#     print("True")
-
-
-# ticker = yf.Ticker(str("qan.ax").upper())

@@ -224,8 +224,6 @@ def buy():
         date = formdata["date"]
         brokerage = formdata["brokerage"]
 
-        print("FORMDATA",ticker,price,amount,date,brokerage)
-
         # Check validity of "Ticker"
         if price_fetch(ticker) is ValueError:
             print("ERR1")
@@ -245,6 +243,26 @@ def buy():
         if brokerage.isdecimal() is False:
             print("ERR4")
             return render_template("error.html")
+        
+        # Get full name of stock
+        symbol = yf.Ticker(ticker)
+        company_name = symbol.info['longName']
+        print(company_name)
+
+        # Put Market Locale
+        if ".ax" in ticker:
+            marketindex = "ASX"
+        else:
+            marketindex = "NYSE"
+        
+        # Check for existing stocks of the same category
+        existing_stock = cur.execute("SELECT ticker FROM portfolio WHERE ticker = ? AND user_id = ?", ticker, U)
+
+        # Create brand new entry for stock
+        if not existing_stock:
+            cur.execute("INSERT INTO portfolio (user_id, ticker, name, market, avgprice, quantity, brokerage, buysell) VALUES (?, ?, ?, ?, ?, ?, ?, ?",
+            U, ticker, company_name, marketindex, price, amount, brokerage, 'buy')
+
 
     # TODO:
     return render_template('dashboard.html', user=U)
@@ -282,6 +300,10 @@ def sell():
         if brokerage.isdecimal() is False:
             print("ERR4")
             return render_template("error.html")
+        
+        # Get full name of stock
+        symbol = yf.Ticker(ticker)
+        company_name = symbol.info['longName']
 
     # TODO:
     return render_template('dashboard.html', user=U)
