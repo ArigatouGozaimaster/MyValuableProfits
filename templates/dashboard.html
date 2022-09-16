@@ -21,24 +21,24 @@
             <thead>
                 <tr>
                     <th>Ticker</th>
-                    <th>Company</th>
+                    <th>Name</th>
                     <th>Market</th>
-                    <th>Purchase Price</th>
+                    <th>Avg. Price ($)</th>
                     <th>Quantity</th>
-                    <th>Brokerage fees</th>
-                    <th>Live Price</th>
-                    <th>Total Value</th>
-                    <th>Profit</th>
-                    <th>Capital Gains</th>
-                    <th>Capital Gains%</th>
+                    <th>Brokerage ($)</th>
+                    <th>Current Price ($)</th>
+                    <th>Total Value ($)</th>
+                    <th>Profit/Loss ($)</th>
+                    <th>Return (%)</th>
                 </tr>
             </thead>
             <tbody> 
                 <tr>
                     <td>QAN</td>
                     <td>Qantas Airways Limited</td>
-                    <td>5</td>
-                    <td>4.9</td>
+                    <td>ASX</td>
+                    <td>6.90</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -46,26 +46,34 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td>QAN</td>
-                    <td>Qantas Airways Limited</td>
-                    <td>4.9</td>
-                    <td>3</td>
+                    <td>BABA</td>
+                    <td>Alibaba Group Holding Ltd - ADR</td>
+                    <td>NYSE</td>
+                    <td>4.20</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </tbody>                    
         </table>
     </div>
 
     <div id="forms-container">
-        <form id="buy-form">
-            <h4>Buy Transaction</h4>
-            <label for="ticker">Enter ticker: </label>
-            <input type="text" name="ticker" required>
-            <label for="price">Enter price: </label>
-            <input type="text" name="price" required>
-            <label for="date">Enter date: </label>
-            <input type="text" name="date" required>
-            <label for="brokerage">Enter brokerage fees: </label>
-            <input type="text" name="brokerage" required>
+        <form action="/buy" method="post" id="buy-form">
+            <h4>Acquisition</h4>
+            <label for="ticker">Ticker: </label>
+            <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
+            <label for="price">Price: </label>
+            <input autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
+            <label for="amount">Quantity: </label>
+            <input autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
+            <label for="date">Acquisition Date: </label>
+            <input autocomplete="off" id="date" name="date" type="date" required>
+            <label for="brokerage">Brokerage: </label>
+            <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
             <input type="submit" value="Submit" class="submit-btn">
         </form>
         <form id="sell-form">
