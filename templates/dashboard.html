@@ -76,16 +76,18 @@
             <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
             <input type="submit" value="Submit" class="submit-btn">
         </form>
-        <form id="sell-form" >
+        <form action="/sell" method="post" id="sell-form" >
             <h4>Sell Transaction</h4>
-            <label for="ticker">Enter ticker: </label>
-            <input type="text" name="ticker" required>
-            <label for="price">Enter price: </label>
-            <input type="text" name="price" required>
-            <label for="date">Enter date: </label>
-            <input type="text" name="date" required>
-            <label for="brokerage">Enter brokerage fees: </label>
-            <input type="text" name="brokerage" required>
+            <label for="ticker">Ticker: </label>
+            <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
+            <label for="price">Price: </label>
+            <input autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
+            <label for="amount">Quantity: </label>
+            <input autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
+            <label for="date">Acquisition Date: </label>
+            <input autocomplete="off" id="date" name="date" type="date" required>
+            <label for="brokerage">Brokerage: </label>
+            <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
             <input type="submit" value="Submit" class="submit-btn">
         </form>
     </div>

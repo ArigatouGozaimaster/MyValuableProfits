@@ -215,7 +215,43 @@ def dashboard():
 @app.route('/buy', methods=['GET', 'POST'])
 @login_required
 def buy():
+    # Fetch information from form
+    if request.method == 'POST':
+        formdata = request.form
+        ticker = formdata["ticker"]
+        price = formdata["price"]
+        amount = formdata["amount"]
+        date = formdata["date"]
+        brokerage = formdata["brokerage"]
 
+        print("FORMDATA",ticker,price,amount,date,brokerage)
+
+        # Check validity of "Ticker"
+        if price_fetch(ticker) is ValueError:
+            print("ERR1")
+            return render_template("error.html")
+
+        # Check validity of "Price"
+        if price.isdecimal() is False:
+            print("ERR2")
+            return render_template("error.html")
+        
+        # Check validity of "Amount"
+        if amount.isdecimal() is False:
+            print("ERR3")
+            return render_template("error.html")
+
+        # Check validity of "Brokerage"
+        if brokerage.isdecimal() is False:
+            print("ERR4")
+            return render_template("error.html")
+
+    # TODO:
+    return render_template('dashboard.html', user=U)
+
+@app.route('/sell', methods=['GET', 'POST'])
+@login_required
+def sell():
     # Fetch information from form
     if request.method == 'POST':
         formdata = request.form
