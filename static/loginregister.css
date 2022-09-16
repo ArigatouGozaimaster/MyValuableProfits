@@ -39,3 +39,123 @@ section{
     height: 100%;
     object-fit: cover;
 }
+.content{
+    display: flex;
+    width: 50%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.formBox{
+    width: 50%;
+}
+.formBox h2{
+    color: crimson;
+    font-weight: 600;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    border-bottom: 4px solid lavender;
+    display: inline-block;
+    letter-spacing: 1px;
+}
+.inputbox{
+    margin-bottom: 20px;
+}
+.inputbox span{
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: inline-block;
+    color: grey;
+    font-weight: 300;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+.inputbox input{
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    font-weight: 400;
+    border: 1px solid grey;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: cornflowerblue;
+    background: transparent;
+    border-radius: 30px;
+}
+.inputbox input[type="submit"]{
+    background: crimson;
+    color: white;
+    outline: none;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+.inputbox input[type="submit"]:hover{
+    color: white;
+    background: black;
+}
+.remember{
+    margin-bottom: 10px;
+    color: crimson;
+    font-weight: 400;
+    font-size: 14px;
+}
+.inputbox p{
+    color: grey;
+}
+.inputbox p a{
+    color: crimson;
+}
+.formBox h3{
+    color: grey;
+    text-align: center;
+    margin: 80px 0 10px;
+    font-weight: 500;
+}
+.sci{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sci li{
+    list-style: none;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: grey;
+    border-radius: 50%;
+    margin: 0 7px;
+    cursor: pointer;
+}
+.sci li:hover{
+    background: crimson;
+}
+.sci li img{
+    width: 50px;
+    height: 50px;
+    transform: scale(0.5);
+    filter: invert(1);
+}
+
+@media (max-width: 768px){
+    section .backimg
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+    section .content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        z-index: 1;
+    }
+}

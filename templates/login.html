@@ -12,18 +12,40 @@
 <body>
     <section>
         <div class="backimg">
-            <img alt="alternative" src="../media/login.png">
+            <img alt="alternative" src="/static/images/login.png">
         </div>
         <div class="content">
-            <h1>Login</h1>
-            <form method="POST" action="">
-                {{ form.hidden_tag() }}
-                {{ form.username }}
-                {{ form.password }}
-                {{ form.submit }}
-            </form>
-            <a href="{{ url_for('register') }}">Sign Up</a>
+            <div class="formBox">
+                <h2>Welcome Back!</h2>
+                <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                    <div class="inputbox">
+                        <span>Username</span>
+                        {{ form.username(class_='input') }}
+                    </div>
+                    <div class="inputbox">
+                        <span>Password</span>
+                        {{ form.password(class_='input') }}
+                    </div>
+                    <div class="remember">
+                        <label><input type="checkbox" name=""> Remember Me?</label>
+                    </div>
+                    <div class="inputbox">
+                        {{ form.submit(class_='input') }}
+                    </div>
+                    <div class="inputbox">
+                        <p>Need an account? <a href="{{ url_for('register') }}">Sign Up</a></p>
+                    </div>
+                </form>
+                <h3>Login with social media</h3>
+                <ul class="sci">
+                    <li><img alt="alternative" src="/static/images/facebook.png"></li>
+                    <li><img alt="alternative" src="/static/images/twitter.png"></li>
+                    <li><img alt="alternative" src="/static/images/linkedin.png"></li>
+                </ul>
+            </div>
         </div>
     </section>
 </body>
 </html>
+

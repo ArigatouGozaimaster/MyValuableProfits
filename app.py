@@ -39,7 +39,7 @@ A list of pre-requisites for functionality
 """
 
 # Initialisation of Flask constructor module, SQLAlchemy, and Bcrypt
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 bcrypt = Bcrypt(app)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -93,9 +93,9 @@ class RegisterForm(FlaskForm):
 # Login for an account
 class LoginForm(FlaskForm):
 
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
+    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "e.g. admin"})
     
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
+    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "e.g. admin"})
     
     submit = SubmitField("Login")
 
