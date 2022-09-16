@@ -64,7 +64,6 @@
     </div>
 
     <div id="forms-container">
-<<<<<<< HEAD
         <form action="/buy" method="post" id="buy-form">
             <h4>Acquisition</h4>
             <label for="ticker">Ticker: </label>
@@ -77,22 +76,6 @@
             <input autocomplete="off" id="date" name="date" type="date" required>
             <label for="brokerage">Brokerage: </label>
             <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
-=======
-        <form 
-            id="buy-form" 
-            action="{{ url_for('handle_buy') }}" 
-            method="post"
-        >
-            <h4>Buy Transaction</h4>
-            <label for="ticker">Enter ticker: </label>
-            <input type="text" name="ticker" required>
-            <label for="price">Enter price: </label>
-            <input type="text" name="price" required>
-            <label for="date">Enter date: </label>
-            <input type="text" name="date" required>
-            <label for="brokerage">Enter brokerage fees: </label>
-            <input type="text" name="brokerage" required>
->>>>>>> ba9ffe09dc7b32933adb66120b7c4b07bbc8c6cb
             <input type="submit" value="Submit" class="submit-btn">
         </form>
         <form id="sell-form" >
