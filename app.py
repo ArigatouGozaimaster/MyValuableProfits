@@ -118,7 +118,7 @@ def current_rate():
 # Fetch LIVE Stock Price (YFinance)
 def price_fetch(stock):
     ticker = yf.Ticker(str(stock).upper())
-    
+
     # if ticker does not exist:
     if ticker.info['regularMarketPrice'] is None:
         return ValueError
@@ -211,21 +211,6 @@ def dashboard():
     # TODO:
     return render_template('dashboard.html', user=U)
 
-<<<<<<< HEAD
-@app.route('/handle_buy', methods=['POST'])
-def handle_buy():
-    formdata = request.form
-
-    input_ticker = formdata['ticker']
-    input_price = formdata['price']
-    input_date = formdata['date']
-    input_brokerage = formdata['brokerage']
-
-    print("INPUT:", input_ticker, input_price, input_date, input_brokerage)
-    
-    # TODO: process formdata
-
-=======
 
 @app.route('/buy', methods=['GET', 'POST'])
 @login_required
@@ -233,30 +218,36 @@ def buy():
 
     # Fetch information from form
     if request.method == 'POST':
-        ticker = request.form.get("symbol")
-        price = request.form.get("price")
-        amount = request.form.get("amount")
-        date = request.form.get("date")
-        brokerage = request.form.get("brokerage")
+        formdata = request.form
+        ticker = formdata["ticker"]
+        price = formdata["price"]
+        amount = formdata["amount"]
+        date = formdata["date"]
+        brokerage = formdata["brokerage"]
+
+        print("FORMDATA",ticker,price,amount,date,brokerage)
 
         # Check validity of "Ticker"
         if price_fetch(ticker) is ValueError:
+            print("ERR1")
             return render_template("error.html")
 
         # Check validity of "Price"
         if price.isdecimal() is False:
+            print("ERR2")
             return render_template("error.html")
         
         # Check validity of "Amount"
         if amount.isdecimal() is False:
+            print("ERR3")
             return render_template("error.html")
 
         # Check validity of "Brokerage"
         if brokerage.isdecimal() is False:
+            print("ERR4")
             return render_template("error.html")
 
     # TODO:
->>>>>>> eeb3403fa83b3e6089fb21ca644d71cf40e71b94
     return render_template('dashboard.html', user=U)
 
 

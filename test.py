@@ -38,6 +38,7 @@ print(price_fetch("qan.ax"))
 """
 
 # Fetching an Exchange Rate from the past 1300 days (LIMIT)
+
 """
 def historic_exchange_rate(purchase_date):
     df = data.DataReader('DEXUSAL', 'fred')
@@ -46,6 +47,7 @@ def historic_exchange_rate(purchase_date):
 
 print(historic_exchange_rate("2020-03-27"))
 """
+
 
 # Update database.db
 """
@@ -63,3 +65,14 @@ CREATE TABLE portfolio(
     );
 DROP TABLE portfolio;
 """
+
+ticker = yf.Ticker("QAN.AX")
+str(stock).upper()
+curr_price = ticker.info['regularMarketPrice']
+if curr_price is None:
+    print("False")
+else: 
+    print("True")
+
+
+ticker = yf.Ticker(str("qan.ax").upper())
