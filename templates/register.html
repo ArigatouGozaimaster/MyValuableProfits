@@ -1,19 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Register</title>
+    <link rel="stylesheet" href="../static/loginregister.css">
 </head>
+
 <body>
-    <h1>Register</h1>
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        {{ form.username }}
-        {{ form.password }}
-        {{ form.submit }}
-    </form>
-    <a href="{{ url_for('login') }}">Login</a>
+    <section>
+        <div class="backimg2">
+            <img alt="alternative" src="/static/images/register.jpg">
+        </div>
+        <div class="content">
+            <div class="formBox">
+                <h2>Get Started!</h2>
+                <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                    <div class="inputbox">
+                        <span>Username</span>
+                        {{ form.username(class_='input') }}
+                    </div>
+                    <div class="inputbox">
+                        <span>Password</span>
+                        {{ form.password(class_='input') }}
+                    </div>
+                    <div class="inputbox">
+                        {{ form.submit(class_='input') }}
+                    </div>
+                    <div class="inputbox">
+                        <p>Already have an account? <a href="{{ url_for('register') }}">Log In</a></p>
+                    </div>
+                </form>
+                <h3>Sign Up with social media</h3>
+                <ul class="sci">
+                    <li><img alt="alternative" src="/static/images/facebook.png"></li>
+                    <li><img alt="alternative" src="/static/images/twitter.png"></li>
+                    <li><img alt="alternative" src="/static/images/linkedin.png"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
