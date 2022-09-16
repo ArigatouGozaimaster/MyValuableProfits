@@ -1,2 +1,8 @@
+<<<<<<< HEAD
 ./__pycache__
 /flask_session
+=======
+flask_session/
+__pycache__/
+.DS_Store
+>>>>>>> 3703d782a2f35d3faed06e88f38e6e56cceea983
