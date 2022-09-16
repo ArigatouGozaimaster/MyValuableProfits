@@ -211,5 +211,17 @@ def dashboard():
     # TODO:
     return render_template('dashboard.html', user=U)
 
+@app.route('/handle_buy', methods=['POST'])
+def handle_buy():
+    formdata = request.form
+    print(formdata)
+    # Formdata is an: 
+    #immutableMultiDict([('ticker', 'QAN'), ('price', '90'), ... ])
+    # TODO: process formdata
+    
+    return render_template('dashboard.html', user=U)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
