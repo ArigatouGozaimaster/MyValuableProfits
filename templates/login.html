@@ -6,19 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="../static/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/loginregister.css">
 </head>
 
 <body>
-    <div class="loginbox">
-        <h1>Login</h1>
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            {{ form.username }}
-            {{ form.password }}
-            {{ form.submit }}
-        </form>
-        <a href="{{ url_for('register') }}">Sign Up</a>
-    </div>
+    <section>
+        <div class="backimg">
+            <img alt="alternative" src="../media/login.png">
+        </div>
+        <div class="content">
+            <h1>Login</h1>
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                {{ form.username }}
+                {{ form.password }}
+                {{ form.submit }}
+            </form>
+            <a href="{{ url_for('register') }}">Sign Up</a>
+        </div>
+    </section>
 </body>
 </html>

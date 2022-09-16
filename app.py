@@ -40,8 +40,10 @@ A list of pre-requisites for functionality
 
 # Initialisation of Flask constructor module, SQLAlchemy, and Bcrypt
 app = Flask(__name__)
-db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db = SQLAlchemy(app)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
