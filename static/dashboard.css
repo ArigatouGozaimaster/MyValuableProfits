@@ -36,8 +36,9 @@ h2 {
   padding-block: 20px;
 }
 
+/* Table */
+
 #table-container {
-  /* background-color: grey; */
   margin-inline: 15%;
   text-align: left;
 }
@@ -77,5 +78,53 @@ tr:nth-of-type(even) {
 
 tr:last-of-type {
   border-bottom: 2px solid crimson;
+}
 
+/* Forms */
+#forms-container {
+  margin: 30px 15%;
+  display: flex;
+}
+
+#forms-container form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-inline: 20px;
+  text-align: left;
+  width: 100%;
+  background-color: rgb(240,240,240);
+  padding: 20px 20px;
+  border-radius: 25px;
+}
+
+form label {
+  width: 100%;
+  margin: 3px 3px;
+  color: rgb(35, 35, 35);
+}
+
+form input {
+  width: 100%;
+  margin-bottom: 5px;
+  height: 1.5em;
+  border-radius: 20px;
+  border: 1px solid gray;
+  padding: 3px 6px;
+}
+
+form h4 {
+  margin: 4px 0;
+}
+
+form .submit-btn {
+  width: 30%;
+  margin-inline: auto;
+  margin-top: 10px;
+  margin-bottom: 0;
+  cursor: pointer;
+  background-color: rgb(35, 35, 35);
+  color: white;
+  height: 30px;
 }
