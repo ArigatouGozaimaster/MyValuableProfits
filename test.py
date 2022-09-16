@@ -66,13 +66,13 @@ CREATE TABLE portfolio(
 DROP TABLE portfolio;
 """
 
-ticker = yf.Ticker("QAN.AX")
-str(stock).upper()
-curr_price = ticker.info['regularMarketPrice']
-if curr_price is None:
-    print("False")
-else: 
-    print("True")
+# ticker = yf.Ticker("QAN.AX")
+# str(stock).upper()
+# curr_price = ticker.info['regularMarketPrice']
+# if curr_price is None:
+#     print("False")
+# else: 
+#     print("True")
 
 
-ticker = yf.Ticker(str("qan.ax").upper())
+# ticker = yf.Ticker(str("qan.ax").upper())
