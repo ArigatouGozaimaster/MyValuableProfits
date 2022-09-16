@@ -20,39 +20,30 @@
         <table>
             <thead>
                 <tr>
-                <th>Ticker</th>
-                <th>Company</th>
-                <th>Market</th>
-                <th>Purchase Price</th>
-                <th>Quantity</th>
-                <th>Brokerage fees</th>
-                <th>Live Price</th>
-                <th>Total Value</th>
-                <th>Profit</th>
-                <th>Dividends</th>
-                <th>Capital Gains</th>
-                <th>Capital Gains%</th>
-
+                    <th>Ticker</th>
+                    <th>Company</th>
+                    <th>Market</th>
+                    <th>Purchase Price</th>
+                    <th>Quantity</th>
+                    <th>Brokerage fees</th>
+                    <th>Live Price</th>
+                    <th>Total Value</th>
+                    <th>Profit</th>
+                    <th>Capital Gains</th>
+                    <th>Capital Gains%</th>
                 </tr>
             </thead>
             <tbody> 
                 <tr>
                     <td>QAN</td>
                     <td>Qantas Airways Limited</td>
+                    <td>5</td>
                     <td>4.9</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>QAN</td>
-                    <td>Qantas Airways Limited</td>
-                    <td>4.9</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>QAN</td>
-                    <td>Qantas Airways Limited</td>
-                    <td>4.9</td>
-                    <td>3</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td>QAN</td>
@@ -73,17 +64,20 @@
             <input type="text" name="price" required>
             <label for="date">Enter date: </label>
             <input type="text" name="date" required>
+            <label for="brokerage">Enter brokerage fees: </label>
+            <input type="text" name="brokerage" required>
             <input type="submit" value="Submit" class="submit-btn">
         </form>
         <form id="sell-form">
             <h4>Sell Transaction</h4>
             <label for="ticker">Enter ticker: </label>
             <input type="text" name="ticker" required>
-
             <label for="price">Enter price: </label>
             <input type="text" name="price" required>
             <label for="date">Enter date: </label>
             <input type="text" name="date" required>
+            <label for="brokerage">Enter brokerage fees: </label>
+            <input type="text" name="brokerage" required>
             <input type="submit" value="Submit" class="submit-btn">
         </form>
     </div>
