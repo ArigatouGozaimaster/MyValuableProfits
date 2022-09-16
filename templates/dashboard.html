@@ -5,9 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="../static/dashboard.css">
+
 </head>
 <body>
-    <h1>Welcome back {{ user }}</h1>
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <header>
+        <span>MyValuableProfits</span>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </header>
+
+    <h2>Welcome back, {{ user }}</h2>
+
+    <div id="table-container">
+        <table>
+            <tr>
+              <th>Ticker</th>
+              <th>Company</th>
+              <th>Price</th>
+              <th>Quantity</th>
+            </tr>
+            <tr>
+              <td>QAN</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+    </div>
 </body>
 </html>
