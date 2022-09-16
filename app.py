@@ -211,6 +211,7 @@ def dashboard():
     # TODO:
     return render_template('dashboard.html', user=U)
 
+
 @app.route('/buy', methods=['GET', 'POST'])
 @login_required
 def buy():
@@ -245,3 +246,4 @@ def buy():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

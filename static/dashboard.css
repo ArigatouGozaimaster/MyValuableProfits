@@ -40,7 +40,7 @@ h2 {
 
 #table-container {
   margin-inline: 10%;
-  text-align: left;
+  text-align: center;
 }
 
 table {
@@ -60,10 +60,10 @@ thead {
 th {
   color: white;
   font-size: 16px;
-  /* padding: 10px 12px; */
+  padding: 10px 12px 6px 12px;
   padding-inline: 20px;
   text-align: center;
-
+  width: 9%;
 }
 
 td {
