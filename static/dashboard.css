@@ -39,14 +39,14 @@ h2 {
 /* Table */
 
 #table-container {
-  margin-inline: 15%;
+  margin-inline: 10%;
   text-align: left;
 }
 
 table {
   width: 100%;
   font-size: 0.9em;
-  min-width: 500px;
+  min-width: 800px;
   border-collapse: collapse;
   border-radius: 16px;
   overflow: hidden;
@@ -60,7 +60,9 @@ thead {
 th {
   color: white;
   font-size: 16px;
-  padding: 10px 12px;
+  /* padding: 10px 12px; */
+  padding-inline: 20px;
+  text-align: center;
 
 }
 
@@ -97,6 +99,7 @@ tr:last-of-type {
   background-color: rgb(240,240,240);
   padding: 20px 20px;
   border-radius: 25px;
+  border: 1px solid rgb(135, 135, 135);
 }
 
 form label {
@@ -111,7 +114,7 @@ form input {
   height: 1.5em;
   border-radius: 20px;
   border: 1px solid gray;
-  padding: 3px 6px;
+  padding: 3px 10px;
 }
 
 form h4 {
