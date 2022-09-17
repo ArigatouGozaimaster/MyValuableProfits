@@ -12,6 +12,7 @@ Testing
 - Fetching Current Real-Time Exchange Rate (USD/AUD) 
 - Importing Stock Data Based on Ticker Symbol
 - Fetching an Exchange Rate from the past 1300 days (LIMIT)
+- Clean up User_id
 """
 
 # Fetching Current Real-Time Exchange Rate (USD/AUD) 
@@ -70,7 +71,7 @@ DROP TABLE portfolio;
 """
 
 # Clean up User_id
-
+"""
 def user_id(input):
     id = re.findall("\d+", input)
     var = ''
@@ -81,4 +82,4 @@ def user_id(input):
 
 tag = ("<User 1>")
 print(user_id(tag))
-
+"""

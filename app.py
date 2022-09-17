@@ -212,22 +212,23 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/dashboard')
 @login_required
 def dashboard():
     """ Stock Portfolio Dashboard """
+    
+    # Fetch user's id
+    current_user_number = str(current_user)
+    # Change user's id into a number for reference in SQL database
+    user_number = int(user_id(current_user_number))
+    # Fetch username from user's id
+    user_name = cur.execute("SELECT username FROM user WHERE id = ?", (user_number,))
+    user_name = cur.fetchone()
+    # Query loop to return only one element
+    for name in user_name:
+        user_name = name
+    return render_template('dashboard.html', user = user_name)
 
-    # Load GET form and fetch username
-    if request.method == 'GET':
-        # Fetch user's id
-        current_user_number = str(current_user)
-        # Change user's id into a number for reference in SQL database
-        user_number = int(user_id(current_user_number))
-        # Fetch username from user's id
-        user_name = cur.execute("SELECT username FROM user WHERE id = ?", (user_number,))
-        user_name = cur.fetchone()
-        print(user_name)
-        return render_template('dashboard.html', user = user_name)
     
 
 @app.route('/buy', methods=['GET', 'POST'])
