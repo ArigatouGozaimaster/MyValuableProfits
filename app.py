@@ -228,11 +228,7 @@ def dashboard():
         user_name = cur.fetchone()
         print(user_name)
         return render_template('dashboard.html', user = user_number)
-
-
-    # TODO:
     
-
 
 @app.route('/buy', methods=['GET', 'POST'])
 @login_required
