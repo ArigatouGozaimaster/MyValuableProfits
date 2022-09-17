@@ -322,8 +322,7 @@ def buy():
             new_brokerage = update_brokerage + brokerage
             existing_value = update_quant * update_avg
             new_value = amount * price
-            new_avg = (existing_value + new_value)/(new_quantity)
-            print(new_quantity, new_brokerage, new_avg)
+            new_avg = round((existing_value + new_value)/(new_quantity),2)
 
             # Sanity Check
             if cur.execute("SELECT * FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name)):
