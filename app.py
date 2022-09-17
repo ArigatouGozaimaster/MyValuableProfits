@@ -224,10 +224,10 @@ def dashboard():
         # Change user's id into a number for reference in SQL database
         user_number = int(user_id(current_user_number))
         # Fetch username from user's id
-        user_name = cur.execute("SELECT username FROM user WHERE id = ?", user_number)
+        user_name = cur.execute("SELECT username FROM user WHERE id = ?", (user_number,))
         user_name = cur.fetchone()
         print(user_name)
-        return render_template('dashboard.html', user = user_number)
+        return render_template('dashboard.html', user = user_name)
     
 
 @app.route('/buy', methods=['GET', 'POST'])
