@@ -216,14 +216,17 @@ def logout():
 @login_required
 def dashboard():
     """ Stock Portfolio Dashboard """
-    
+
     # Fetch user's id
     current_user_number = str(current_user)
+
     # Change user's id into a number for reference in SQL database
     user_number = int(user_id(current_user_number))
+
     # Fetch username from user's id
     user_name = cur.execute("SELECT username FROM user WHERE id = ?", (user_number,))
     user_name = cur.fetchone()
+
     # Query loop to return only one element
     for name in user_name:
         user_name = name
@@ -275,68 +278,78 @@ def buy():
         else:
             marketindex = "NYSE"
         
-        # Fetch current user
-        user_number = user_id(current_user)
-        user_name = cur.execute("SELECT username FROM user WHERE id = ?", user_number)
-        user_name = cur.fetchall()
+        # Fetch user's id
+        current_user_number = str(current_user)
+
+        # Change user's id into a number for reference in SQL database
+        user_number = int(user_id(current_user_number))
+
+        # Fetch username from user's id
+        user_name = cur.execute("SELECT username FROM user WHERE id = ?", (user_number,))
+        user_name = cur.fetchone()
+
+        # Query loop to return only one element
+        for name in user_name:
+            user_name = name
         
         # Check for existing stocks of the same category
         existing_stock = cur.execute("SELECT ticker FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
         existing_stock = cur.fetchall()
+
+        # Update an existing entry for the stock
         if existing_stock:
-            print("Existing!", existing_stock)
+
+            # Fetch current existing portfolio details [avgprice]
+            update_avg = cur.execute("SELECT avgprice FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+            update_avg = cur.fetchone()
+            for number in update_avg:
+                update_avg = number
+
+            # Fetch current existing portfolio details [quantity]
+            update_quant = cur.execute("SELECT quantity FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+            update_quant = cur.fetchone()
+            for number in update_quant:
+                update_quant = number
+
+            # Fetch current existing portfolio details [brokerage]
+            update_brokerage = cur.execute("SELECT brokerage FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+            update_brokerage = cur.fetchone()
+            for number in update_brokerage:
+                update_brokerage = number
+
+            # Calculate new values for SQL database
+            new_quantity = update_quant + amount
+            new_brokerage = update_brokerage + brokerage
+            existing_value = update_quant * update_avg
+            new_value = amount * price
+            new_avg = (existing_value + new_value)/(new_quantity)
+            print(new_quantity, new_brokerage, new_avg)
+
+            # Sanity Check
+            if cur.execute("SELECT * FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name)):
+                print('FOUND')
+            else:
+                print('NOT FOUND')
+
+            # Update SQL database
+            cur.execute("UPDATE portfolio SET quantity = ?, brokerage = ?, avgprice = ? WHERE ticker = ? AND user_id = ?", 
+                       (new_quantity, new_brokerage, new_avg, ticker, user_name))
+            con.commit()
 
         # Create brand new entry for stock
         if not existing_stock:
-            print("Inserting new stock!", user_name)
+
+            # Execute SQL insertion
             cur.execute("INSERT INTO portfolio (user_id, ticker, name, market, avgprice, quantity, brokerage, buysell) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (user_name, ticker, company_name, marketindex, price, amount, brokerage, 'buy'))
+                       (user_name, ticker, company_name, marketindex, price, amount, brokerage, 'buy'))
             con.commit()
-            con.close()
 
-
-    # TODO:
     return render_template('dashboard.html', user = user_name)
 
 @app.route('/sell', methods=['GET', 'POST'])
 @login_required
 def sell():
-    # Fetch information from form
-    if request.method == 'POST':
-        formdata = request.form
-        ticker = formdata["ticker"]
-        price = formdata["price"]
-        amount = formdata["amount"]
-        date = formdata["date"]
-        brokerage = formdata["brokerage"]
-
-        print("FORMDATA",ticker,price,amount,date,brokerage)
-
-        # Check validity of "Ticker"
-        if price_fetch(ticker) is ValueError:
-            print("ERR1")
-            return render_template("error.html")
-
-        # Check validity of "Price"
-        if price.isdecimal() is False:
-            print("ERR2")
-            return render_template("error.html")
-        
-        # Check validity of "Amount"
-        if amount.isdecimal() is False:
-            print("ERR3")
-            return render_template("error.html")
-
-        # Check validity of "Brokerage"
-        if brokerage.isdecimal() is False:
-            print("ERR4")
-            return render_template("error.html")
-        
-        # Get full name of stock
-        symbol = yf.Ticker(ticker)
-        company_name = symbol.info['longName']
-
-    # TODO:
+    
     return render_template('dashboard.html')
 
 
