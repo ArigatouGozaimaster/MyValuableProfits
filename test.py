@@ -1,5 +1,6 @@
 import yfinance as yf
 import sqlite3
+import re
 from datetime import date
 from pandas_datareader import data
 
@@ -67,3 +68,17 @@ CREATE TABLE portfolio(
     );
 DROP TABLE portfolio;
 """
+
+# Clean up User_id
+
+def user_id(input):
+    id = re.findall("\d+", input)
+    var = ''
+    for element in id:
+        var += str(element)
+    user = int(var)
+    return user
+
+tag = ("<User 1>")
+print(user_id(tag))
+

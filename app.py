@@ -7,6 +7,7 @@ under requirements.txt. For more details, consult the attached ReadMe.md
 """
 
 import os
+import re
 import datetime
 import yfinance as yf
 import sqlite3
@@ -106,7 +107,7 @@ Helper Functions
 A list of helper functions for the functionality of the website
 - Get LIVE Exchange Rate Data 
 - Fetch LIVE Stock Price (YFinance)
-- Global Variable for Username "U"
+- Clean up User_id
 """
 
 # Get LIVE Exchange Rate Data
@@ -131,8 +132,14 @@ def price_fetch(stock):
     else:
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
 
-# Global Variable for Username "U"
-U = None
+# Clean up User_id
+def user_id(input):
+    id = re.findall("\d+", input)
+    var = ''
+    for element in id:
+        var += str(element)
+    user = int(var)
+    return user
 
 
 """
@@ -161,14 +168,16 @@ def login():
     """ Show the login page and prompt the user to login """
 
     form = LoginForm()
-    global U
-    # Login Validation via POST request
+
+    # Username Validation
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        U = form.username.data
         if user:
+
+            # Password Validation
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
+
                 return redirect(url_for('dashboard'))
 
     # GET Request
@@ -206,74 +215,91 @@ def logout():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    """ Stock Portfolio Dashboard - Implement Majority of code HERE"""
+    """ Stock Portfolio Dashboard """
+
+    # Load GET form and fetch username
+    if request.method == 'GET':
+        # Fetch user's id
+        current_user_number = str(current_user)
+        # Change user's id into a number for reference in SQL database
+        user_number = int(user_id(current_user_number))
+        # Fetch username from user's id
+        user_name = cur.execute("SELECT username FROM user WHERE id = ?", user_number)
+        user_name = cur.fetchone()
+        print(user_name)
+        return render_template('dashboard.html', user = user_number)
+
 
     # TODO:
-    return render_template('dashboard.html', user=U)
+    
 
 
 @app.route('/buy', methods=['GET', 'POST'])
 @login_required
 def buy():
-    with sqlite3.connect('database.db', check_same_thread=False, isolation_level=None) as con:
     
-        # Fetch information from form
-        if request.method == 'POST':
-            formdata = request.form
-            ticker = formdata["ticker"].upper()
-            price = round(float(formdata["price"]),2)
-            amount = float(formdata["amount"])
-            date = formdata["date"]
-            brokerage = round(float(formdata["brokerage"]),2)
+    # Fetch information from form
+    if request.method == 'POST':
+        formdata = request.form
+        ticker = formdata["ticker"].upper()
+        price = round(float(formdata["price"]),2)
+        amount = float(formdata["amount"])
+        date = formdata["date"]
+        brokerage = round(float(formdata["brokerage"]),2)
 
-            # Check validity of "Ticker"
-            if price_fetch(ticker) is ValueError:
-                print("ERR1")
-                return render_template("error.html")
+        # Check validity of "Ticker"
+        if price_fetch(ticker) is ValueError:
+            print("ERR1")
+            return render_template("error.html")
 
-            # Check validity of "Price"
-            if isinstance(price, float) is False:
-                print("ERR2")
-                return render_template("error.html")
-            
-            # Check validity of "Amount"
-            if isinstance(amount, float) is False:
-                print("ERR3")
-                return render_template("error.html")
+        # Check validity of "Price"
+        if isinstance(price, float) is False:
+            print("ERR2")
+            return render_template("error.html")
+        
+        # Check validity of "Amount"
+        if isinstance(amount, float) is False:
+            print("ERR3")
+            return render_template("error.html")
 
-            # Check validity of "Brokerage"
-            if isinstance(brokerage, float) is False:
-                print("ERR4")
-                return render_template("error.html")
-            
-            # Get full name of stock
-            symbol = yf.Ticker(ticker)
-            company_name = symbol.info['longName']
-            print(company_name)
+        # Check validity of "Brokerage"
+        if isinstance(brokerage, float) is False:
+            print("ERR4")
+            return render_template("error.html")
+        
+        # Get full name of stock
+        symbol = yf.Ticker(ticker)
+        company_name = symbol.info['longName']
+        print(company_name)
 
-            # Put Market Locale
-            if ".ax" in ticker:
-                marketindex = "ASX"
-            else:
-                marketindex = "NYSE"
-            
-            # Check for existing stocks of the same category
-            existing_stock = cur.execute("SELECT ticker FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, U))
-            existing_stock = cur.fetchall()
-            if existing_stock:
-                print("Existing!", existing_stock)
+        # Put Market Locale
+        if ".ax" in ticker:
+            marketindex = "ASX"
+        else:
+            marketindex = "NYSE"
+        
+        # Fetch current user
+        user_number = user_id(current_user)
+        user_name = cur.execute("SELECT username FROM user WHERE id = ?", user_number)
+        user_name = cur.fetchall()
+        
+        # Check for existing stocks of the same category
+        existing_stock = cur.execute("SELECT ticker FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+        existing_stock = cur.fetchall()
+        if existing_stock:
+            print("Existing!", existing_stock)
 
-            # Create brand new entry for stock
-            if not existing_stock:
-                print("Inserting new stock!", U)
-                cur.execute("INSERT INTO portfolio (user_id, ticker, name, market, avgprice, quantity, brokerage, buysell) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                (U, ticker, company_name, marketindex, price, amount, brokerage, 'buy'))
-                con.commit()
-                con.close()
+        # Create brand new entry for stock
+        if not existing_stock:
+            print("Inserting new stock!", user_name)
+            cur.execute("INSERT INTO portfolio (user_id, ticker, name, market, avgprice, quantity, brokerage, buysell) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (user_name, ticker, company_name, marketindex, price, amount, brokerage, 'buy'))
+            con.commit()
+            con.close()
 
 
     # TODO:
-    return render_template('dashboard.html', user=U)
+    return render_template('dashboard.html', user = user_name)
 
 @app.route('/sell', methods=['GET', 'POST'])
 @login_required
@@ -314,7 +340,7 @@ def sell():
         company_name = symbol.info['longName']
 
     # TODO:
-    return render_template('dashboard.html', user=U)
+    return render_template('dashboard.html')
 
 
 if __name__ == '__main__':
