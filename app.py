@@ -57,7 +57,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
 # Link Database to SQLite3
-con = sqlite3.connect("database.db")
+con = sqlite3.connect('database.db', check_same_thread=False, isolation_level=None)
 cur = con.cursor()
 
 # Login Manager
@@ -106,7 +106,7 @@ Helper Functions
 A list of helper functions for the functionality of the website
 - Get LIVE Exchange Rate Data 
 - Fetch LIVE Stock Price (YFinance)
-- Global Variables
+- Global Variable for Username "U"
 """
 
 # Get LIVE Exchange Rate Data
@@ -131,7 +131,7 @@ def price_fetch(stock):
     else:
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
 
-# Global Variables
+# Global Variable for Username "U"
 U = None
 
 
@@ -215,53 +215,61 @@ def dashboard():
 @app.route('/buy', methods=['GET', 'POST'])
 @login_required
 def buy():
-    # Fetch information from form
-    if request.method == 'POST':
-        formdata = request.form
-        ticker = formdata["ticker"]
-        price = formdata["price"]
-        amount = formdata["amount"]
-        date = formdata["date"]
-        brokerage = formdata["brokerage"]
+    with sqlite3.connect('database.db', check_same_thread=False, isolation_level=None) as con:
+    
+        # Fetch information from form
+        if request.method == 'POST':
+            formdata = request.form
+            ticker = formdata["ticker"].upper()
+            price = round(float(formdata["price"]),2)
+            amount = float(formdata["amount"])
+            date = formdata["date"]
+            brokerage = round(float(formdata["brokerage"]),2)
 
-        # Check validity of "Ticker"
-        if price_fetch(ticker) is ValueError:
-            print("ERR1")
-            return render_template("error.html")
+            # Check validity of "Ticker"
+            if price_fetch(ticker) is ValueError:
+                print("ERR1")
+                return render_template("error.html")
 
-        # Check validity of "Price"
-        if price.isdecimal() is False:
-            print("ERR2")
-            return render_template("error.html")
-        
-        # Check validity of "Amount"
-        if amount.isdecimal() is False:
-            print("ERR3")
-            return render_template("error.html")
+            # Check validity of "Price"
+            if isinstance(price, float) is False:
+                print("ERR2")
+                return render_template("error.html")
+            
+            # Check validity of "Amount"
+            if isinstance(amount, float) is False:
+                print("ERR3")
+                return render_template("error.html")
 
-        # Check validity of "Brokerage"
-        if brokerage.isdecimal() is False:
-            print("ERR4")
-            return render_template("error.html")
-        
-        # Get full name of stock
-        symbol = yf.Ticker(ticker)
-        company_name = symbol.info['longName']
-        print(company_name)
+            # Check validity of "Brokerage"
+            if isinstance(brokerage, float) is False:
+                print("ERR4")
+                return render_template("error.html")
+            
+            # Get full name of stock
+            symbol = yf.Ticker(ticker)
+            company_name = symbol.info['longName']
+            print(company_name)
 
-        # Put Market Locale
-        if ".ax" in ticker:
-            marketindex = "ASX"
-        else:
-            marketindex = "NYSE"
-        
-        # Check for existing stocks of the same category
-        existing_stock = cur.execute("SELECT ticker FROM portfolio WHERE ticker = ? AND user_id = ?", ticker, U)
+            # Put Market Locale
+            if ".ax" in ticker:
+                marketindex = "ASX"
+            else:
+                marketindex = "NYSE"
+            
+            # Check for existing stocks of the same category
+            existing_stock = cur.execute("SELECT ticker FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, U))
+            existing_stock = cur.fetchall()
+            if existing_stock:
+                print("Existing!", existing_stock)
 
-        # Create brand new entry for stock
-        if not existing_stock:
-            cur.execute("INSERT INTO portfolio (user_id, ticker, name, market, avgprice, quantity, brokerage, buysell) VALUES (?, ?, ?, ?, ?, ?, ?, ?",
-            U, ticker, company_name, marketindex, price, amount, brokerage, 'buy')
+            # Create brand new entry for stock
+            if not existing_stock:
+                print("Inserting new stock!", U)
+                cur.execute("INSERT INTO portfolio (user_id, ticker, name, market, avgprice, quantity, brokerage, buysell) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (U, ticker, company_name, marketindex, price, amount, brokerage, 'buy'))
+                con.commit()
+                con.close()
 
 
     # TODO:
