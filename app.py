@@ -107,6 +107,7 @@ Helper Functions
 A list of helper functions for the functionality of the website
 - Get LIVE Exchange Rate Data 
 - Fetch LIVE Stock Price (YFinance)
+- Fetching an Exchange Rate from the past 1300 days (LIMIT)
 - Clean up User_id
 """
 
@@ -131,6 +132,16 @@ def price_fetch(stock):
     # if ticker is NASDAQ, convert to AUD
     else:
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
+
+# Fetching an Exchange Rate from the past 1300 days (LIMIT)
+
+def historic_exchange_rate(purchase_date):
+    df = data.DataReader('DEXUSAL', 'fred')
+    try:
+        value = df.loc[purchase_date, 'DEXUSAL']
+    except KeyError:
+        value = current_rate() 
+    return value
 
 # Clean up User_id
 def user_id(input):
@@ -273,11 +284,16 @@ def buy():
         print(company_name)
 
         # Put Market Locale
-        if ".ax" in ticker:
+        if ".AX" in ticker:
             marketindex = "ASX"
         else:
             marketindex = "NYSE"
         
+        # Adjust for exchange rate
+        if not ".AX" in ticker:
+            exchange_rate = historic_exchange_rate(str(date))
+            price = price / exchange_rate
+
         # Fetch user's id
         current_user_number = str(current_user)
 

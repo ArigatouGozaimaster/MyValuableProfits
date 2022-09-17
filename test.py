@@ -40,14 +40,16 @@ print(price_fetch("qan.ax"))
 """
 
 # Fetching an Exchange Rate from the past 1300 days (LIMIT)
-
 """
 def historic_exchange_rate(purchase_date):
     df = data.DataReader('DEXUSAL', 'fred')
-    value = df.loc[purchase_date, 'DEXUSAL']
+    try:
+        value = df.loc[purchase_date, 'DEXUSAL']
+    except KeyError:
+        value = current_rate() 
     return value
 
-print(historic_exchange_rate("2020-03-27"))
+print(historic_exchange_rate('2022-09-15'))
 """
 
 
