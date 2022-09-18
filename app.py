@@ -355,7 +355,7 @@ def buy():
                        (user_name, ticker, company_name, marketindex, price, amount, brokerage, 'buy'))
             con.commit()
 
-    return render_template('dashboard.html', user = user_name)
+    return dashboard()
 
 @app.route('/sell', methods=['GET', 'POST'])
 @login_required
@@ -450,7 +450,7 @@ def sell():
                        (new_quantity, new_brokerage, new_avg, ticker, user_name))
                 con.commit()
         
-    return render_template('dashboard.html', user = user_name)
+    return dashboard()
 
 @app.route('/yahoofinance', methods=['GET', 'POST'])
 @login_required
@@ -459,7 +459,6 @@ def yahoofinance():
         formdata = request.form
         ticker = str(formdata["yahoo_check"])
         ticker = "https://finance.yahoo.com/lookup?s="+ticker
-        print(ticker)
         return redirect(ticker)
 
 
