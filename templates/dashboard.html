@@ -12,21 +12,65 @@
 
 </head>
 <body>
+    <!-- ___________________Navbar___________________-->
     <nav>
         <div class="container">
             <img src="/static/images/mvp.png" class="logo">
             <div class="search-bar">
                 <span class="material-symbols-sharp">search</span>
-                <input type="text" placeholder="Search" autocomplete="off">
+                <form action="/yahoofinance" method="post" id="yahoo-form">
+                    <input type="text" name="yahoo_check" placeholder="Search Yahoo Finance" autocomplete="off">
+                </form>
             </div>
             <div class="profile-area">
-                <img src="/static/images/ganyu_logo.webp">
-                <h5>MVP.{{ user }}</h5>
-                <span class="material-symbols-sharp">expand_more</span>
+                <img src="/static/images/ganyu_logo.png">
+                <h5>MVP.{{ user }}  |</h5>
                 <a href="{{ url_for('logout') }}">Logout</a>
             </div>
         </div>
     </nav>
+
+    <!-- ___________________Sidebar___________________-->
+    <main>
+        <!-- Sidebar Infotab -->
+        <aside>
+            <div class="sidebar">
+                <a href="#" class="active1">
+                    <span class="material-symbols-sharp">dashboard</span>
+                    <h4>Dashboard</h4>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-sharp">account_balance</span>
+                    <h4>Exchange Rate</h4>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-sharp">account_balance_wallet</span>
+                    <h4>Wallet</h4>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-sharp">receipt_long</span>
+                    <h4>Transactions</h4>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-sharp">settings</span>
+                    <h4>Settings</h4>
+                </a>
+            </div>
+            <div class="line">
+
+            </div>
+            <div class="disclaimer">
+                <span class="material-symbols-sharp">copyright</span>
+                <h4>Created By:</h4>
+                <p>ArigatouGozaimaster | tcheric</p>
+                <a href="https://github.com/ArigatouGozaimaster/MyValuableProfits">Source Code</a>
+            </div>
+        </aside>
+        <!-- Middle Infotab -->
+        <section class="middle">
+
+        </section>
+    </main>
 
     <div id="table-container">
         <table>

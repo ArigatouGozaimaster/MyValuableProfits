@@ -8,7 +8,7 @@ body {
   background-color: lightgrey;
 }
 
-/* _______ Header Stylisation _________ */
+/* _________Header Stylisation _________ */
 nav{
   width: 100%;
   background-color: white;
@@ -48,6 +48,7 @@ nav img.logo{
   -webkit-appearance: none;
   border: 0;
   border-width: 0px;
+  justify-content: center;
 }
 .profile-area{
   position: relative;
@@ -68,13 +69,101 @@ nav img.logo{
   color: black;
   font-weight: bold;
   font-size: 16px;
-
+}
+.profile-area h5:hover{
+  color: crimson; 
 }
 .profile-area a{
   text-decoration: none;
   color: black;
   font-weight: bold;
   font-size: 16px;
+}
+.profile-area a:hover{
+  color: crimson;
+}
+
+/* _________Sidebar_________ */
+main{
+  display: grid;
+  grid-template-columns: 13rem auto;
+  gap: 2rem;
+  width: 96%;
+  margin: 1rem auto 4rem;
+}
+main aside{
+  display: flex;
+  flex-direction: column;
+  height: 88vh;
+}
+main aside .sidebar a{
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  height: 4.2rem;
+  color:black;
+  position: relative;
+  text-decoration: none;
+}
+main aside .sidebar a span{
+  font-size: 1.7rem;
+  margin-left: 1rem;
+  color: crimson;
+  transition: all 300ms ease;
+}
+main aside .sidebar a h4{
+  font-size: 15px;
+  font-weight: 500;
+}
+main aside .sidebar a.active1{
+  background-color: white;
+  color: crimson;
+}
+main aside .sidebar a.active1:before{
+  content: '';
+  width: 6px;
+  height: 100%;
+  position: absolute;
+  background: crimson;
+}
+main aside .sidebar a:hover{
+  color: crimson;
+}
+main aside .sidebar a:hover span{
+  margin-left: 2rem;
+}
+main aside .line{
+  content: "";
+  height: 2px;
+  width: 100%;
+  background-color: black;
+  margin: 15px;
+  margin-bottom: 30px;
+}
+main aside .disclaimer{
+  text-align: center;
+}
+main aside .disclaimer span{
+  font-size: 2.5rem;
+}
+main aside .disclaimer h4{
+  margin: 1rem 0;
+}
+main aside .disclaimer a{
+  display: block;
+  width: 100%;
+  background: crimson;
+  color: white;
+  border-radius: 15px;
+  padding: 0.7rem 0.4rem;
+  margin-top: 2rem;
+  text-decoration: none;
+}
+main aside .disclaimer a:hover{
+font-weight: 700;
+}
+main aside .disclaimer p{
+  font-size: 14px;
 }
 
 /* */

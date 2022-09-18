@@ -162,6 +162,7 @@ The backend of all url routing including:
 - Logout (/logout)
 - Dashboard (/dashboard)
 - Buy (/buy)
+- Search Yahoo Finance (/yahoofinance)
 """
 
 
@@ -450,6 +451,16 @@ def sell():
                 con.commit()
         
     return render_template('dashboard.html', user = user_name)
+
+@app.route('/yahoofinance', methods=['GET', 'POST'])
+@login_required
+def yahoofinance():
+    if request.method == 'POST':
+        formdata = request.form
+        ticker = str(formdata["yahoo_check"])
+        ticker = "https://finance.yahoo.com/lookup?s="+ticker
+        print(ticker)
+        return redirect(ticker)
 
 
 if __name__ == '__main__':
