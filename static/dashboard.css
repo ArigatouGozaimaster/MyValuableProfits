@@ -132,7 +132,7 @@ main aside .sidebar a:hover{
 main aside .sidebar a:hover span{
   margin-left: 2rem;
 }
-main aside .line{
+.line{
   content: "";
   height: 2px;
   width: 100%;
@@ -166,17 +166,31 @@ main aside .disclaimer p{
   font-size: 14px;
 }
 
-/* */
-h2 {
-  margin-inline: 15%;
-  margin-block: 0;
-  padding-block: 20px;
+/* _________Content_________ */
+.content .exchange{
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  display: wrap;
+}
+.content .exchange h1{
+  float: left;
+}
+.content .exchange p{
+  float: left;
+  margin-left: 50px;
+  margin-top: 17.5px;
+  background-color: white;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  color: green;
 }
 
-/* Table */
 
+/* _________Portfolio of Stocks_________ */
 #table-container {
-  margin-inline: 10%;
   text-align: center;
 }
 
@@ -196,7 +210,8 @@ thead {
 
 th {
   color: white;
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: 400;
   padding: 10px 12px 6px 12px;
   padding-inline: 20px;
   text-align: center;

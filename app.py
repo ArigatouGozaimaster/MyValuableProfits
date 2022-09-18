@@ -241,7 +241,11 @@ def dashboard():
     # Query loop to return only one element
     for name in user_name:
         user_name = name
-    return render_template('dashboard.html', user = user_name)
+    
+    # Fetch current exchange rate price
+    exchange_rate = current_rate()
+
+    return render_template('dashboard.html', user = user_name, exchange_rate = exchange_rate)
 
     
 
