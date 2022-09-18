@@ -6,15 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="../static/dashboard.css">
+    <!-- Google API Fonts from https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
 
 </head>
 <body>
-    <header>
-        <span>MyValuableProfits</span>
-        <a href="{{ url_for('logout') }}">Logout</a>
-    </header>
-
-    <h2>Welcome back, {{ user }}</h2>
+    <nav>
+        <div class="container">
+            <img src="/static/images/mvp.png" class="logo">
+            <div class="search-bar">
+                <span class="material-symbols-sharp">search</span>
+                <input type="text" placeholder="Search" autocomplete="off">
+            </div>
+            <div class="profile-area">
+                <img src="/static/images/ganyu_logo.webp">
+                <h5>MVP.{{ user }}</h5>
+                <span class="material-symbols-sharp">expand_more</span>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </div>
+    </nav>
 
     <div id="table-container">
         <table>

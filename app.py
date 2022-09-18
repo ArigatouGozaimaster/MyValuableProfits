@@ -134,7 +134,6 @@ def price_fetch(stock):
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
 
 # Fetching an Exchange Rate from the past 1300 days (LIMIT)
-
 def historic_exchange_rate(purchase_date):
     df = data.DataReader('DEXUSAL', 'fred')
     try:
