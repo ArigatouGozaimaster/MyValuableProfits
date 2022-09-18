@@ -260,22 +260,18 @@ def buy():
 
         # Check validity of "Ticker"
         if price_fetch(ticker) is ValueError:
-            print("ERR1")
             return render_template("error.html")
 
         # Check validity of "Price"
         if isinstance(price, float) is False:
-            print("ERR2")
             return render_template("error.html")
         
         # Check validity of "Amount"
         if isinstance(amount, float) is False:
-            print("ERR3")
             return render_template("error.html")
 
         # Check validity of "Brokerage"
         if isinstance(brokerage, float) is False:
-            print("ERR4")
             return render_template("error.html")
         
         # Get full name of stock
@@ -364,8 +360,97 @@ def buy():
 @app.route('/sell', methods=['GET', 'POST'])
 @login_required
 def sell():
-    
-    return render_template('dashboard.html')
+
+    # Fetch information from form
+    if request.method == 'POST':
+        formdata = request.form
+        ticker = formdata["ticker"].upper()
+        price = round(float(formdata["price"]),2)
+        amount = float(formdata["amount"])
+        date = formdata["date"]
+        brokerage = round(float(formdata["brokerage"]),2)
+
+         # Check validity of "Ticker"
+        if price_fetch(ticker) is ValueError:
+            return render_template("error.html")
+
+        # Check validity of "Price"
+        if isinstance(price, float) is False:
+            return render_template("error.html")
+        
+        # Check validity of "Amount"
+        if isinstance(amount, float) is False:
+            return render_template("error.html")
+
+        # Check validity of "Brokerage"
+        if isinstance(brokerage, float) is False:
+            return render_template("error.html")
+        
+        # Get full name of stock
+        symbol = yf.Ticker(ticker)
+        company_name = symbol.info['longName']
+        print(company_name)
+
+        # Adjust for exchange rate
+        if not ".AX" in ticker:
+            exchange_rate = historic_exchange_rate(str(date))
+            price = price / exchange_rate
+        
+        # Fetch user's id
+        current_user_number = str(current_user)
+
+        # Change user's id into a number for reference in SQL database
+        user_number = int(user_id(current_user_number))
+
+        # Fetch username from user's id
+        user_name = cur.execute("SELECT username FROM user WHERE id = ?", (user_number,))
+        user_name = cur.fetchone()
+
+        # Query loop to return only one element
+        for name in user_name:
+            user_name = name
+        
+        # Validity check for stock existing in portfolio
+        existing_stock = cur.execute("SELECT ticker FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+        existing_stock = cur.fetchall()
+
+        # Update an existing entry for the stock
+        if existing_stock:
+
+            # Fetch current existing portfolio details [avgprice]
+            update_avg = cur.execute("SELECT avgprice FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+            update_avg = cur.fetchone()
+            for number in update_avg:
+                update_avg = number
+
+            # Fetch current existing portfolio details [quantity]
+            update_quant = cur.execute("SELECT quantity FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+            update_quant = cur.fetchone()
+            for number in update_quant:
+                update_quant = number
+
+            # Fetch current existing portfolio details [brokerage]
+            update_brokerage = cur.execute("SELECT brokerage FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+            update_brokerage = cur.fetchone()
+            for number in update_brokerage:
+                update_brokerage = number
+            
+            # Validity check that owned stocks >= sold stocks
+            if update_quant >= amount:
+
+                # Calculate new values for SQL database
+                new_quantity = update_quant - amount
+                new_brokerage = update_brokerage + brokerage
+                existing_value = update_quant * update_avg
+                new_value = amount * price
+                new_avg = round((existing_value - new_value)/(new_quantity),2)
+
+                # Update SQL database
+                cur.execute("UPDATE portfolio SET quantity = ?, brokerage = ?, avgprice = ? WHERE ticker = ? AND user_id = ?", 
+                       (new_quantity, new_brokerage, new_avg, ticker, user_name))
+                con.commit()
+        
+    return render_template('dashboard.html', user = user_name)
 
 
 if __name__ == '__main__':
