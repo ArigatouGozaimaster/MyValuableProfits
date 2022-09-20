@@ -134,7 +134,6 @@ def price_fetch(stock):
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
 
 # Fetching an Exchange Rate from the past 1300 days (LIMIT)
-
 def historic_exchange_rate(purchase_date):
     df = data.DataReader('DEXUSAL', 'fred')
     try:
@@ -163,6 +162,7 @@ The backend of all url routing including:
 - Logout (/logout)
 - Dashboard (/dashboard)
 - Buy (/buy)
+- Search Yahoo Finance (/yahoofinance)
 """
 
 
@@ -241,7 +241,11 @@ def dashboard():
     # Query loop to return only one element
     for name in user_name:
         user_name = name
-    return render_template('dashboard.html', user = user_name)
+    
+    # Fetch current exchange rate price
+    exchange_rate = current_rate()
+
+    return render_template('dashboard.html', user = user_name, exchange_rate = exchange_rate)
 
     
 
@@ -355,7 +359,7 @@ def buy():
                        (user_name, ticker, company_name, marketindex, price, amount, brokerage, 'buy'))
             con.commit()
 
-    return render_template('dashboard.html', user = user_name)
+    return dashboard()
 
 @app.route('/sell', methods=['GET', 'POST'])
 @login_required
@@ -450,7 +454,16 @@ def sell():
                        (new_quantity, new_brokerage, new_avg, ticker, user_name))
                 con.commit()
         
-    return render_template('dashboard.html', user = user_name)
+    return dashboard()
+
+@app.route('/yahoofinance', methods=['GET', 'POST'])
+@login_required
+def yahoofinance():
+    if request.method == 'POST':
+        formdata = request.form
+        ticker = str(formdata["yahoo_check"])
+        ticker = "https://finance.yahoo.com/lookup?s="+ticker
+        return redirect(ticker)
 
 
 if __name__ == '__main__':

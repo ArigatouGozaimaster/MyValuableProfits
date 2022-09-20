@@ -6,91 +6,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="../static/dashboard.css">
+    <!-- Google API Fonts from https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
 
 </head>
 <body>
-    <header>
-        <span>MyValuableProfits</span>
-        <a href="{{ url_for('logout') }}">Logout</a>
-    </header>
+    <!-- ___________________Navbar___________________-->
+    <nav>
+        <div class="container">
+            <img src="/static/images/mvp.png" class="logo">
+            <div class="search-bar">
+                <span class="material-symbols-sharp">search</span>
+                <form action="/yahoofinance" method="post" id="yahoo-form">
+                    <input type="text" name="yahoo_check" placeholder="Search Yahoo Finance" autocomplete="off">
+                </form>
+            </div>
+            <div class="profile-area">
+                <img src="/static/images/ganyu_logo.png">
+                <h5>MVP.{{ user }}  |</h5>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </div>
+    </nav>
 
-    <h2>Welcome back, {{ user }}</h2>
-
-    <div id="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Ticker</th>
-                    <th>Name</th>
-                    <th>Market</th>
-                    <th>Avg. Price ($)</th>
-                    <th>Quantity</th>
-                    <th>Brokerage ($)</th>
-                    <th>Current Price ($)</th>
-                    <th>Total Value ($)</th>
-                    <th>Profit/Loss ($)</th>
-                    <th>Return (%)</th>
-                </tr>
-            </thead>
-            <tbody> 
-                <tr>
-                    <td>QAN</td>
-                    <td>Qantas Airways Limited</td>
-                    <td>ASX</td>
-                    <td>4.9</td>
-                    <td>30</td>
-                    <td>9.50</td>
-                    <td>5.2</td>
-                    <td>156.00</td>
-                    <td>9.00</td>
-                    <td>-0.50</td>
-                </tr>
-                <tr>
-                    <td>QAN</td>
-                    <td>Qantas Airways Limited</td>
-                    <td>ASX</td>
-                    <td>4.9</td>
-                    <td>30</td>
-                    <td>9.50</td>
-                    <td>5.2</td>
-                    <td>156.00</td>
-                    <td>9.00</td>
-                    <td>-0.50</td>
-                </tr>
-            </tbody>                    
-        </table>
-    </div>
-
-    <div id="forms-container">
-        <form action="/buy" method="post" id="buy-form">
-            <h4>Acquisition</h4>
-            <label for="ticker">Ticker: </label>
-            <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
-            <label for="price">Price: </label>
-            <input autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
-            <label for="amount">Quantity: </label>
-            <input autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
-            <label for="date">Acquisition Date: </label>
-            <input autocomplete="off" id="date" name="date" type="date" required>
-            <label for="brokerage">Brokerage: </label>
-            <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
-            <input type="submit" value="Submit" class="submit-btn">
-        </form>
-        <form action="/sell" method="post" id="sell-form" >
-            <h4>Sell Transaction</h4>
-            <label for="ticker">Ticker: </label>
-            <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
-            <label for="price">Price: </label>
-            <input autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
-            <label for="amount">Quantity: </label>
-            <input autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
-            <label for="date">Acquisition Date: </label>
-            <input autocomplete="off" id="date" name="date" type="date" required>
-            <label for="brokerage">Brokerage: </label>
-            <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
-            <input type="submit" value="Submit" class="submit-btn">
-        </form>
-    </div>
-    
+    <!-- ___________________Sidebar___________________-->
+    <main>
+        <!-- Sidebar Infotab -->
+        <aside>
+            <div class="sidebar">
+                <a href="#" class="active1">
+                    <span class="material-symbols-sharp">dashboard</span>
+                    <h4>Dashboard</h4>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-sharp">account_balance</span>
+                    <h4>Exchange Rate</h4>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-sharp">account_balance_wallet</span>
+                    <h4>Wallet</h4>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-sharp">receipt_long</span>
+                    <h4>Transactions</h4>
+                </a>
+                <a href="#">
+                    <span class="material-symbols-sharp">settings</span>
+                    <h4>Settings</h4>
+                </a>
+            </div>
+            <div class="line"></div>
+            <div class="disclaimer">
+                <span class="material-symbols-sharp">copyright</span>
+                <h4>Created By:</h4>
+                <p>ArigatouGozaimaster | tcheric</p>
+                <a href="https://github.com/ArigatouGozaimaster/MyValuableProfits">Source Code</a>
+            </div>
+        </aside>
+        <!--_______ Middle Infotab - Fetching Live Exchange Rate _______-->
+        <section class="content">
+            <div class="exchange">
+                <h1>&#129689  AUD/USD Exchange Rate</h1>
+                <p>{{ exchange_rate }}</p>
+            </div>
+            <!-- Holdings Table -->
+            <div id="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ticker</th>
+                            <th>Name</th>
+                            <th>Market</th>
+                            <th>Avg. Price ($AUD)</th>
+                            <th>Quantity</th>
+                            <th>Current Price ($AUD)</th>
+                            <th>Total Value ($AUD)</th>
+                            <th>Profit/Loss ($AUD)</th>
+                            <th>Return (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        <tr>
+                            <td>QAN</td>
+                            <td>Qantas Airways Limited</td>
+                            <td>ASX</td>
+                            <td>4.9</td>
+                            <td>30</td>
+                            <td>5.2</td>
+                            <td>156.00</td>
+                            <td>9.00</td>
+                            <td>-0.50</td>
+                        </tr>
+                        <tr>
+                            <td>QAN</td>
+                            <td>Qantas Airways Limited</td>
+                            <td>ASX</td>
+                            <td>4.9</td>
+                            <td>30</td>
+                            <td>5.2</td>
+                            <td>156.00</td>
+                            <td>9.00</td>
+                            <td>-0.50</td>
+                        </tr>
+                    </tbody>                    
+                </table>
+            </div>
+            <!--_______ Buy Sell Form _______-->
+            <div id="forms-container">
+                <form action="/buy" method="post" id="buy-form">
+                    <h4>Acquisition</h4>
+                    <label for="ticker">Ticker: </label>
+                    <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
+                    <label for="price">Price: </label>
+                    <input autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
+                    <label for="amount">Quantity: </label>
+                    <input autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
+                    <label for="date">Acquisition Date: </label>
+                    <input autocomplete="off" id="date" name="date" type="date" required>
+                    <label for="brokerage">Brokerage: </label>
+                    <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
+                    <input type="submit" value="Submit" class="submit-btn">
+                </form>
+                <form action="/sell" method="post" id="sell-form" >
+                    <h4>Sell Transaction</h4>
+                    <label for="ticker">Ticker: </label>
+                    <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
+                    <label for="price">Price: </label>
+                    <input autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
+                    <label for="amount">Quantity: </label>
+                    <input autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
+                    <label for="date">Acquisition Date: </label>
+                    <input autocomplete="off" id="date" name="date" type="date" required>
+                    <label for="brokerage">Brokerage: </label>
+                    <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
+                    <input type="submit" value="Submit" class="submit-btn">
+                </form>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
