@@ -498,24 +498,7 @@ def yahoofinance():
         ticker = "https://finance.yahoo.com/lookup?s="+ticker
 
         return redirect(ticker)
-
-"""
-@app.context_processor
-def stockprice():
-
-    # Get a stock price Jinja2 Function:
-    def get_price(ticker):
-        stockprice = yf.Ticker(str(ticker).upper())
-        print(stockprice.info['regularMarketPrice'])
-        if stockprice.info['regularMarketPrice'] is None:
-            return ValueError
-        elif ".ax" in stockprice:
-            return round(stockprice.info['regularMarketPrice'], 2)
-        else:
-            return round(stockprice.info['regularMarketPrice'] / current_rate(), 2)
-    
-    return dict(get_price = get_price)
-"""
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
