@@ -8,7 +8,7 @@ body {
   background-color: lightgrey;
 }
 
-/* _________Header Stylisation _________ */
+/* _________Header Navbar Stylisation _________ */
 nav{
   width: 100%;
   background-color: white;
@@ -35,17 +35,12 @@ nav img.logo{
   position: absolute;
   left: 15%;
   padding: 5px;
-  -webkit-appearance: none;
-  border: 0;
-  border-width: 0px;
-  outline: 0px;
 }
 .search-bar input[type="text"]{
   color: crimson;
   background: transparent;
-  width: 100%;
+  width: 40vw;
   outline: 0px;
-  -webkit-appearance: none;
   border: 0;
   border-width: 0px;
   justify-content: center;

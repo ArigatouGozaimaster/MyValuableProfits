@@ -51,6 +51,10 @@ To add a screenshot, create an `assets/images` folder in your repository and upl
 
 If your project has a lot of features, list them here.
 
+## Test Cases
+
+A list of tests done 
+
 ## Credits
 
 List your collaborators, if any, with links to their GitHub profiles.

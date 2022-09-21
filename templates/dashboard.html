@@ -70,52 +70,45 @@
                 <h1>&#129689  AUD/USD Exchange Rate</h1>
                 <p>{{ exchange_rate }}</p>
             </div>
-            <!-- Holdings Table -->
+            <!-- _______Holdings Table_______ -->
             <div id="table-container">
                 <table>
                     <thead>
                         <tr>
+                            <!-- _______Headings for the table_______ -->
                             <th>Ticker</th>
                             <th>Name</th>
                             <th>Market</th>
-                            <th>Avg. Price ($AUD)</th>
+                            <th>Avg. Price</th>
                             <th>Quantity</th>
-                            <th>Current Price ($AUD)</th>
-                            <th>Total Value ($AUD)</th>
-                            <th>Profit/Loss ($AUD)</th>
+                            <th>Current Price</th>
+                            <th>Total Value</th>
+                            <th>Profit/Loss</th>
                             <th>Return (%)</th>
                         </tr>
                     </thead>
                     <tbody> 
+                        <!-- Jinja formatted from app.py /dashboard --> 
+                        {% for information in get_data %}
                         <tr>
-                            <td>QAN</td>
-                            <td>Qantas Airways Limited</td>
-                            <td>ASX</td>
-                            <td>4.9</td>
-                            <td>30</td>
-                            <td>5.2</td>
-                            <td>156.00</td>
-                            <td>9.00</td>
-                            <td>-0.50</td>
+                            <td>{{ information[0] }}</td>
+                            <td>{{ information[1] }}</td>
+                            <td>{{ information[2] }}</td>
+                            <td>{{ "%.2f"|format(information[3]) }}</td>
+                            <td>{{ information[4] }}</td>
+                            <td>{{ "%.2f"|format(information[3] * information[4]) }}</td>
+                            <td>{{ price_fetch(information[0]) }}</td>
+                            <td>x</td>
+                            <td>x</td>
                         </tr>
-                        <tr>
-                            <td>QAN</td>
-                            <td>Qantas Airways Limited</td>
-                            <td>ASX</td>
-                            <td>4.9</td>
-                            <td>30</td>
-                            <td>5.2</td>
-                            <td>156.00</td>
-                            <td>9.00</td>
-                            <td>-0.50</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>                    
                 </table>
             </div>
             <!--_______ Buy Sell Form _______-->
             <div id="forms-container">
                 <form action="/buy" method="post" id="buy-form">
-                    <h4>Acquisition</h4>
+                    <h4>Buy</h4>
                     <label for="ticker">Ticker: </label>
                     <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
                     <label for="price">Price: </label>
@@ -129,7 +122,7 @@
                     <input type="submit" value="Submit" class="submit-btn">
                 </form>
                 <form action="/sell" method="post" id="sell-form" >
-                    <h4>Sell Transaction</h4>
+                    <h4>Sell</h4>
                     <label for="ticker">Ticker: </label>
                     <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
                     <label for="price">Price: </label>

@@ -126,12 +126,14 @@ def price_fetch(stock):
         return ValueError
 
     # if ticker is Australian
-    elif ".ax" in stock:
+    elif ".AX" in stock:
         return round(ticker.info['regularMarketPrice'], 2)
 
     # if ticker is NASDAQ, convert to AUD
     else:
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
+
+app.jinja_env.globals.update(price_fetch = price_fetch)
 
 # Fetching an Exchange Rate from the past 1300 days (LIMIT)
 def historic_exchange_rate(purchase_date):
@@ -163,6 +165,7 @@ The backend of all url routing including:
 - Dashboard (/dashboard)
 - Buy (/buy)
 - Search Yahoo Finance (/yahoofinance)
+- HTML Jinja2 Stock Price
 """
 
 
@@ -245,7 +248,33 @@ def dashboard():
     # Fetch current exchange rate price
     exchange_rate = current_rate()
 
-    return render_template('dashboard.html', user = user_name, exchange_rate = exchange_rate)
+    # Fetch Portfolio Information for current user stored in SQL
+    fetch_database = cur.execute("SELECT ticker, name, market, avgprice, quantity, brokerage FROM portfolio WHERE user_id = ?", (user_name,))
+    fetch_database = cur.fetchall()
+
+    # Sanity check if there are any holdings (at all)
+    if fetch_database:
+        get_data = list(fetch_database)
+
+        # Iterating the database for each information field (Debug Test)
+        for information in get_data:
+
+            # Iterate for ticker
+            ticker = information[0]
+
+            # Iterate for the full stock name
+            name = information[1]
+
+            # Iterate for the market it belongs to
+            market = information[2]
+
+            # Iterate for the average price the user has paid for the stock
+            avgprice = information[3]
+
+            # Iterate for the quantity of holdings
+            quantity = information[4]
+
+    return render_template('dashboard.html', user = user_name, exchange_rate = exchange_rate, get_data = get_data)
 
     
 
@@ -460,12 +489,33 @@ def sell():
 @login_required
 def yahoofinance():
     if request.method == 'POST':
+
+        # Retrieve the information that the user inputted on the searchbar
         formdata = request.form
         ticker = str(formdata["yahoo_check"])
+
+        # Query Yahoo Finance directly for the string that the user inputted
         ticker = "https://finance.yahoo.com/lookup?s="+ticker
+
         return redirect(ticker)
 
+"""
+@app.context_processor
+def stockprice():
+
+    # Get a stock price Jinja2 Function:
+    def get_price(ticker):
+        stockprice = yf.Ticker(str(ticker).upper())
+        print(stockprice.info['regularMarketPrice'])
+        if stockprice.info['regularMarketPrice'] is None:
+            return ValueError
+        elif ".ax" in stockprice:
+            return round(stockprice.info['regularMarketPrice'], 2)
+        else:
+            return round(stockprice.info['regularMarketPrice'] / current_rate(), 2)
+    
+    return dict(get_price = get_price)
+"""
 
 if __name__ == '__main__':
     app.run(debug=True)
-
