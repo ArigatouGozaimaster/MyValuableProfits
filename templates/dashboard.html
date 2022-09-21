@@ -109,30 +109,55 @@
             <div id="forms-container">
                 <form action="/buy" method="post" id="buy-form">
                     <h4>Buy</h4>
-                    <label for="ticker">Ticker: </label>
-                    <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
-                    <label for="price">Price: </label>
-                    <input autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
-                    <label for="amount">Quantity: </label>
-                    <input autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
-                    <label for="date">Acquisition Date: </label>
+                    <div class="form-sub-box">
+                        <div class="form-sub-box-2">
+                            <label class="half-label" for="ticker">Ticker: </label>
+                            <input class="half-input" autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
+                        </div>
+                        <div class="form-sub-box-2">
+                            <label class="half-label" for="brokerage">Brokerage: </label>
+                            <input class="half-input" autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-sub-box">
+                        <div class="form-sub-box-2">
+                            <label class="half-label" for="price">Price: </label>
+                            <input class="half-input" autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
+                        </div>
+                        <div class="form-sub-box-2">
+                            <label class="half-label" for="amount">Quantity: </label>
+                            <input class="half-input" autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
+                        </div>
+                    </div>
+                    <label id="form-date" for="date">Acquisition Date: </label>
                     <input autocomplete="off" id="date" name="date" type="date" required>
-                    <label for="brokerage">Brokerage: </label>
-                    <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
                     <input type="submit" value="Submit" class="submit-btn">
                 </form>
+
                 <form action="/sell" method="post" id="sell-form" >
                     <h4>Sell</h4>
-                    <label for="ticker">Ticker: </label>
-                    <input autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
-                    <label for="price">Price: </label>
-                    <input autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
-                    <label for="amount">Quantity: </label>
-                    <input autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
-                    <label for="date">Acquisition Date: </label>
+                    <div class="form-sub-box">
+                        <div class="form-sub-box-2">
+                            <label class="half-label" for="ticker">Ticker: </label>
+                            <input class="half-input" autocomplete="off" id="ticker" name="ticker" placeholder="i.e. VTS.AX" type="text" required>
+                        </div>
+                        <div class="form-sub-box-2">
+                        <label class="half-label" for="brokerage">Brokerage: </label>
+                        <input class="half-input" autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-sub-box">
+                        <div class="form-sub-box-2">
+                            <label class="half-label" for="price">Price: </label>
+                            <input class="half-input" autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
+                        </div>
+                        <div class="form-sub-box-2">
+                            <label class="half-label" for="amount">Quantity: </label>
+                            <input class="half-input" autocomplete="off" id="amount" name="amount" placeholder="i.e. 10" type="text" required>
+                        </div>
+                    </div>
+                    <label id="form-date" for="date">Acquisition Date: </label>
                     <input autocomplete="off" id="date" name="date" type="date" required>
-                    <label for="brokerage">Brokerage: </label>
-                    <input autocomplete="off" id="brokerage" name="brokerage" placeholder="i.e. 13.00" type="text" required>
                     <input type="submit" value="Submit" class="submit-btn">
                 </form>
             </div>
