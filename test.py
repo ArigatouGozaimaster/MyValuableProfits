@@ -85,3 +85,22 @@ def user_id(input):
 tag = ("<User 1>")
 print(user_id(tag))
 """
+
+# Call get stock price function for Jinja2
+"""
+@app.context_processor
+def stockprice():
+
+    # Get a stock price Jinja2 Function:
+    def get_price(ticker):
+        stockprice = yf.Ticker(str(ticker).upper())
+        print(stockprice.info['regularMarketPrice'])
+        if stockprice.info['regularMarketPrice'] is None:
+            return ValueError
+        elif ".ax" in stockprice:
+            return round(stockprice.info['regularMarketPrice'], 2)
+        else:
+            return round(stockprice.info['regularMarketPrice'] / current_rate(), 2)
+    
+    return dict(get_price = get_price)
+"""

@@ -96,10 +96,10 @@
                             <td>{{ information[2] }}</td>
                             <td>{{ "%.2f"|format(information[3]) }}</td>
                             <td>{{ information[4] }}</td>
-                            <td>{{ "%.2f"|format(information[3] * information[4]) }}</td>
                             <td>{{ price_fetch(information[0]) }}</td>
-                            <td>x</td>
-                            <td>x</td>
+                            <td>{{ "%.2f"| format(price_fetch(information[0]) * information[4]) }}</td>
+                            <td>{{ "%.2f"| format((price_fetch(information[0]) - information[3]) * information[4]) }}</td>
+                            <td>{{ "%.2f"| format((price_fetch(information[0]) - information[3]) / information[3] * 100) }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>                    
