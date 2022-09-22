@@ -66,10 +66,31 @@
         </aside>
         <!--_______ Middle Infotab - Fetching Live Exchange Rate _______-->
         <section class="content">
-            <div class="exchange">
-                <h1>&#129689  AUD/USD Exchange Rate</h1>
-                <p>{{ exchange_rate }}</p>
+            <div class="title">
+                <h1>Performance</h1>
             </div>
+            <div class="distribution">
+                <div class="mystats1">
+                    <h3>$100</h3>
+                    <p>Overall Performance</p>
+                </div>
+                <div class="mystats1">
+                    <h3>$100</h3>
+                    <p>Portfolio Cost</p>
+                </div>
+                <div class="mystats1">
+                    <h3>$100</h3>
+                    <p>Brokerage Cost</p>
+                </div>
+            </div>
+            <br>
+            <!-- Removed feature - API for aesthetic website design
+            <div class="exchange">
+                <h1>Exchange Rate</h1>
+                <p>AUD/USD : {{ exchange_rate }}</p>
+            </div>
+            <br>
+            -->
             <!-- _______Holdings Table_______ -->
             <div id="table-container">
                 <table>
@@ -88,7 +109,7 @@
                         </tr>
                     </thead>
                     <tbody> 
-                        <!-- Jinja formatted from app.py /dashboard --> 
+                        <!-- Jinja formatted from app.py /dashboard 
                         {% for information in get_data %}
                         {% set live_price = price_fetch(information[0]) %}
                         <tr>
@@ -102,7 +123,21 @@
                             <td>{{ "%.2f"| format((live_price - information[3]) * information[4]) }}</td>
                             <td>{{ "%.2f"| format((live_price - information[3]) / information[3] * 100) }}</td>
                         </tr>
-                        {% endfor %}
+                        {% endfor %} --> 
+
+                        <!-- Non-formatted for fast loading debugging-->
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                        </tr>
+                        
                     </tbody>                    
                 </table>
             </div>

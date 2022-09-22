@@ -162,6 +162,31 @@ main aside .disclaimer p{
 }
 
 /* _________Content_________ */
+.content .title h1{
+  text-align: center;
+  background-color: lightgrey;
+  padding-bottom: 20px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.content .distribution{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+.content .distribution .mystats1{
+  display: grid;
+  background-color: white;
+  float: left;
+  width: 30%;
+  height: 100px;
+  text-align: center;
+}
+.content .distribution .mystats1 p{
+  margin-top: 5px;
+  padding: 0;
+  font-size: smaller;
+}
 .content .exchange{
   width: 100%;
   margin: 0 auto;
@@ -170,27 +195,30 @@ main aside .disclaimer p{
   display: wrap;
 }
 .content .exchange h1{
-  float: left;
+  text-align: center;
 }
 .content .exchange p{
-  float: left;
-  margin-left: 50px;
+  margin-left: 40%;
+  margin-right: 40%;
   margin-top: 17.5px;
   background-color: white;
   padding: 10px 24px;
-  border-radius: 30px;
-  font-weight: 600;
+  font-weight: 400;
   color: green;
+  text-align: center;
 }
-
+.content .tableportfolio h1{
+  text-align: center;
+}
 
 /* _________Portfolio of Stocks_________ */
 #table-container {
   text-align: center;
+  margin-top: 15px;
 }
 
 table {
-  width: 90%;
+  width: 96%;
   margin: auto;
   font-size: 0.9em;
   min-width: 800px;
@@ -230,7 +258,7 @@ tr:last-of-type {
   border-bottom: 2px solid crimson;
 }
 
-/* Forms */
+/* _________Buy and Sell Forms_________ */
 #forms-container {
   margin: 30px 5%;
   display: flex;
