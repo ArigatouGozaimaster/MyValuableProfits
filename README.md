@@ -2,28 +2,9 @@
 
 ## Description
 
-### Who is MVP?
-Welcome to MyValuableProfits (MVP), a not-for-profit website where you can track and cherish your gains as a fellow Aussie stock trader on the ASX and NASDAQ markets.
+Welcome to MyValuableProfits (MVP), a CS50x Final Project submitted as part of the 2022 winter cohort at Harvard University. MVP is a fully functioning and case-tested stock portfolio website, targetted towards Australian shareholders who would like to track (and convert their money back to AUD) in real time using Yahoo Finance API (Web-scrapper) and Panda Datareader Dataform as the AUD/USD API for exchange rates.
 
-### What is MVP?
-MVP is a CS50x Final Project inspired by C$50's Finance Pset and brought to life by our own personal need for a flexible fully customisable stock portfolio tracker (that is also free! More on this later). 
-
-Current statistics of MVP:
-
-1% Python :
-1% HTML :
-1% CSS :
-100% MVP
-
-
-### When is MVP?
-We're currently not sure. Make sure to smash that subscribe button and hit the notification bell to keep up with the latest news!
-
-### Where is MVP?
-Rumors say MVP is currently finding the best gym equipment in town!
-
-### Why is MVP?
-The aim of this project was to practice CRUD (Create, Read, Update, Destroy) with SQL and Panda dataframes, and have a fully functioning, online, and open-source website for all users to traverse. While many websites out there exist such as Sharesight, our goal is to say NO to the monetisation of such a simple yet essential life changing tool. We firmly believe this solves the problem of worldwide capitalism exploiting the lazy people who subscribe to paid websites such as Sharesight, and as a result, the charity that MVP provides means we expect to win our very own Nobel Peace Prize very shortly.   
+![alt text](https://github.com/ArigatouGozaimaster/MyValuableProfits/blob/main/static/images/ganyu_logo.png?raw=true)
 
 
 ## Table of Contents 
@@ -36,7 +17,7 @@ The aim of this project was to practice CRUD (Create, Read, Update, Destroy) wit
 
 ## Installation
 
-What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
+MVP is a program created with HTML, CSS, and Jinja2 for the frontend and Flask and Python for the backend. A full list of requirements is detailed in requirements.txt which can be found in the main directory of this repository.
 
 ## Usage
 
