@@ -79,7 +79,7 @@
                     <p>Portfolio Cost</p>
                 </div>
                 <div class="mystats1">
-                    <h3>$100</h3>
+                    <h3>${{ total_brokerage }}</h3>
                     <p>Brokerage Cost</p>
                 </div>
             </div>
@@ -109,23 +109,22 @@
                         </tr>
                     </thead>
                     <tbody> 
-                        <!-- Jinja formatted from app.py /dashboard 
-                        {% for information in get_data %}
-                        {% set live_price = price_fetch(information[0]) %}
+                        <!-- Jinja formatted from app.py /dashboard --> 
+                        {% for i in portfolio_table %}
                         <tr>
-                            <td>{{ information[0] }}</td>
-                            <td>{{ information[1] }}</td>
-                            <td>{{ information[2] }}</td>
-                            <td>{{ "%.2f"|format(information[3]) }}</td>
-                            <td>{{ information[4] }}</td>
-                            <td>{{ live_price }}</td>
-                            <td>{{ "%.2f"| format(live_price * information[4]) }}</td>
-                            <td>{{ "%.2f"| format((live_price - information[3]) * information[4]) }}</td>
-                            <td>{{ "%.2f"| format((live_price - information[3]) / information[3] * 100) }}</td>
+                            <td>{{ i[0] }}</td>
+                            <td>{{ i[1] }}</td>
+                            <td>{{ i[2] }}</td>
+                            <td>{{ i[3] }}</td>
+                            <td>{{ i[4] }}</td>
+                            <td>{{ i[5] }}</td>
+                            <td>{{ i[6] }}</td>
+                            <td>{{ i[7] }}</td>
+                            <td>{{ i[8] }}</td>
                         </tr>
-                        {% endfor %} --> 
+                        {% endfor %}
 
-                        <!-- Non-formatted for fast loading debugging-->
+                        <!-- Non-formatted for fast loading debugging
                         <tr>
                             <td>1</td>
                             <td>1</td>
@@ -136,8 +135,9 @@
                             <td>1</td>
                             <td>1</td>
                             <td>1</td>
-                        </tr>
-                        
+                        </tr> 
+                        -->
+
                     </tbody>                    
                 </table>
             </div>

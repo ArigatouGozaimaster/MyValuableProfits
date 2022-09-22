@@ -265,8 +265,23 @@ def dashboard():
     for name in user_name:
         user_name = name
     
-    # Fetch current exchange rate price
-    exchange_rate = current_rate()
+    # Fetch Portfolio Brokerage and current price in SQL
+    fetch_brokerage = cur.execute("SELECT brokerage FROM portfolio WHERE user_id = ?", (user_name,))
+    fetch_brokerage = cur.fetchall()
+
+    # Prepare total brokerage variable
+    total_brokerage = 0
+
+    # Change tuple to list for brokerage sum
+    if fetch_brokerage:
+        list_brokerage = list(fetch_brokerage)
+
+        # Sum up all transactions
+        for transaction in list_brokerage:
+            total_brokerage += transaction[0]
+    
+    # Portfolio Table for dashboard.html
+    portfolio_table = []
 
     # Fetch Portfolio Information for current user stored in SQL
     fetch_database = cur.execute("SELECT ticker, name, market, avgprice, quantity, brokerage FROM portfolio WHERE user_id = ?", (user_name,))
@@ -276,26 +291,48 @@ def dashboard():
     if fetch_database:
         get_data = list(fetch_database)
 
+    # Append items to the (empty) portfolio 
+    for info in get_data:
 
-        # Iterating the database for each information field (Debug Test)
-        for information in get_data:
+        # Initialize new stock entry
+        new_entry = []
 
-            # Iterate for ticker
-            ticker = information[0]
+        # Append stock ticker symbol
+        new_entry.append(info[0])
 
-            # Iterate for the full stock name
-            name = information[1]
+        # Append stock full name
+        new_entry.append(info[1])
 
-            # Iterate for the market it belongs to
-            market = information[2]
+        # Append stock market locale
+        new_entry.append(info[2])
 
-            # Iterate for the average price the user has paid for the stock
-            avgprice = information[3]
+        # Append stock average price (purchased)
+        average_price = round(info[3], 2)
+        new_entry.append(average_price)
 
-            # Iterate for the quantity of holdings
-            quantity = information[4]
+        # Append stock quantity (purchased)
+        new_entry.append(info[4])
 
-    return render_template('dashboard.html', user = user_name, exchange_rate = exchange_rate, get_data = get_data)
+        # Fetch live stock price of stock
+        live_price = float(price_fetch(info[0]))
+        new_entry.append(live_price)
+
+        # Calculate the total value of holdings (current)
+        total_value = round(live_price * info[4], 2)
+        new_entry.append(total_value)
+
+        # Calculate profit/loss
+        delta = round((live_price - info[3]) * info[4], 2)
+        new_entry.append(delta)
+
+        # Calculate percentage of profit/loss
+        percentage_delta = round(((live_price - info[3]) / info[3] * 100), 2)
+        new_entry.append(percentage_delta)
+
+        # Append to the entire portfolio
+        portfolio_table.append(new_entry)
+
+    return render_template('dashboard.html', user = user_name, portfolio_table = portfolio_table, total_brokerage = total_brokerage)
 
     
 
@@ -341,7 +378,6 @@ def buy():
         # Get full name of stock
         symbol = yf.Ticker(ticker)
         company_name = symbol.info['longName']
-        print(company_name)
 
         # Put Market Locale (Only supports AX and NYSE)
         if ".AX" in ticker:
