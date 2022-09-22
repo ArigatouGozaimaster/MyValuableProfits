@@ -90,16 +90,17 @@
                     <tbody> 
                         <!-- Jinja formatted from app.py /dashboard --> 
                         {% for information in get_data %}
+                        {% set live_price = price_fetch(information[0]) %}
                         <tr>
                             <td>{{ information[0] }}</td>
                             <td>{{ information[1] }}</td>
                             <td>{{ information[2] }}</td>
                             <td>{{ "%.2f"|format(information[3]) }}</td>
                             <td>{{ information[4] }}</td>
-                            <td>{{ price_fetch(information[0]) }}</td>
-                            <td>{{ "%.2f"| format(price_fetch(information[0]) * information[4]) }}</td>
-                            <td>{{ "%.2f"| format((price_fetch(information[0]) - information[3]) * information[4]) }}</td>
-                            <td>{{ "%.2f"| format((price_fetch(information[0]) - information[3]) / information[3] * 100) }}</td>
+                            <td>{{ live_price }}</td>
+                            <td>{{ "%.2f"| format(live_price * information[4]) }}</td>
+                            <td>{{ "%.2f"| format((live_price - information[3]) * information[4]) }}</td>
+                            <td>{{ "%.2f"| format((live_price - information[3]) / information[3] * 100) }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>                    

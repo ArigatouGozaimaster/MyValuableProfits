@@ -3,6 +3,7 @@ import sqlite3
 import re
 from datetime import date
 from pandas_datareader import data
+import requests
 
 from app import price_fetch
 
@@ -13,6 +14,8 @@ Testing
 - Importing Stock Data Based on Ticker Symbol
 - Fetching an Exchange Rate from the past 1300 days (LIMIT)
 - Clean up User_id
+- Call get stock price function for Jinja2
+- API Key from Alpha Vantage
 """
 
 # Fetching Current Real-Time Exchange Rate (USD/AUD) 
@@ -103,4 +106,18 @@ def stockprice():
             return round(stockprice.info['regularMarketPrice'] / current_rate(), 2)
     
     return dict(get_price = get_price)
+"""
+
+# API Key from Alpha Vantage (Unused - does not support ASX)
+"""
+HN490LD4HQWJS4BD
+
+def alpha_api(ticker):
+    ticker = str(ticker).upper()
+    url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+ticker+"&interval=5min&apikey=HN490LD4HQWJS4BD"
+    r = requests.get(url)
+    data = r.json()
+    return data
+
+print(alpha_api("qan.ax"))
 """

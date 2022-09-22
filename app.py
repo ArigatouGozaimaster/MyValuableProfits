@@ -6,14 +6,12 @@ Import the necessary libraries for the program to run. A full list of requiremen
 under requirements.txt. For more details, consult the attached ReadMe.md
 """
 
-import os
 import re
-import datetime
 import yfinance as yf
 import sqlite3
 
 from pandas_datareader import data
-from flask import Flask, render_template, url_for, redirect, request, session, flash
+from flask import Flask, render_template, url_for, redirect, request
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
@@ -51,7 +49,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Prepare Database
+# Prepare SQLAlchemy Database
 app.config['SECRET_KEY'] = '$a1teDP@$$w0rd15Very1MP0Rtant'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -105,15 +103,17 @@ Helper Functions
 ----------------
 
 A list of helper functions for the functionality of the website
-- Get LIVE Exchange Rate Data 
+- Get LIVE Exchange Rate Data (data.DataReader)
 - Fetch LIVE Stock Price (YFinance)
 - Fetching an Exchange Rate from the past 1300 days (LIMIT)
-- Clean up User_id
+- Clean up User_id to only return integer
 """
 
-# Get LIVE Exchange Rate Data
+# Get LIVE Exchange Rate Data (data.DataReader)
 def current_rate():
     AUD = data.DataReader('DEXUSAL', 'fred')
+
+    # Returns latest entry in exchange rate panda dataform
     current_exchange_rate = AUD.DEXUSAL.iat[-1]
     return current_exchange_rate
 
@@ -125,11 +125,11 @@ def price_fetch(stock):
     if ticker.info['regularMarketPrice'] is None:
         return ValueError
 
-    # if ticker is Australian
+    # if ticker is Australian with .AX
     elif ".AX" in stock:
         return round(ticker.info['regularMarketPrice'], 2)
 
-    # if ticker is NASDAQ, convert to AUD
+    # if ticker is NASDAQ, convert to AUD 
     else:
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
 
@@ -144,7 +144,7 @@ def historic_exchange_rate(purchase_date):
         value = current_rate() 
     return value
 
-# Clean up User_id
+# Clean up User_id to only return integer
 def user_id(input):
     id = re.findall("\d+", input)
     var = ''
@@ -165,16 +165,14 @@ The backend of all url routing including:
 - Dashboard (/dashboard)
 - Buy (/buy)
 - Search Yahoo Finance (/yahoofinance)
-- HTML Jinja2 Stock Price
 """
 
 
 @app.route('/')
 def home():
-    """ Show the default homepage of unregistered user """
+    """ Redirect user to the login page """
 
-    # TODO: Homepage?
-    return render_template('index.html')
+    return login()
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -186,13 +184,26 @@ def login():
     # Username Validation
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+        
+        # If username exists in the database
         if user:
 
-            # Password Validation
+            # If password is valid
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
 
+                # Redirect to user dashboard
                 return redirect(url_for('dashboard'))
+
+            # If password does not match
+            else:
+                error_msg = "Invalid password"
+                return render_template('login.html', form = form, error_msg = error_msg)
+
+        # If username does not exist in the database
+        else:
+            error_msg = "Invalid username"
+            return render_template('login.html', form = form, error_msg = error_msg)
 
     # GET Request
     return render_template('login.html', form = form)
@@ -204,16 +215,25 @@ def register():
 
     form = RegisterForm()
 
-    # Register new user to database.db via POST request
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
+    # POST Request
+    if request.method == 'POST':
+
+        # Check new user valid and register to database.db 
+        if form.validate_on_submit():
+            hashed_password = bcrypt.generate_password_hash(form.password.data)
+            new_user = User(username=form.username.data, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))
+        
+        # If username has already been taken
+        else:
+            error_msg = "Username is already taken"
+            return render_template('register.html', form = form, error_msg = error_msg)
 
     # GET Request
-    return render_template('register.html', form = form)
+    if request.method == 'GET':
+        return render_template('register.html', form = form)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -226,7 +246,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     """ Stock Portfolio Dashboard """
@@ -255,6 +275,7 @@ def dashboard():
     # Sanity check if there are any holdings (at all)
     if fetch_database:
         get_data = list(fetch_database)
+
 
         # Iterating the database for each information field (Debug Test)
         for information in get_data:
@@ -285,10 +306,20 @@ def buy():
     # Fetch information from form
     if request.method == 'POST':
         formdata = request.form
+
+        # Fetch ticker information and change it to uppercase
         ticker = formdata["ticker"].upper()
+
+        # Fetch user defined purchase price
         price = round(float(formdata["price"]),2)
+
+        # Fetch user defined amount of stocks
         amount = float(formdata["amount"])
+
+        # Fetch user defined purchase date. This will be used to fetch an exchange rate
         date = formdata["date"]
+
+        # Fetch user defined brokerage
         brokerage = round(float(formdata["brokerage"]),2)
 
         # Check validity of "Ticker"
@@ -312,9 +343,11 @@ def buy():
         company_name = symbol.info['longName']
         print(company_name)
 
-        # Put Market Locale
+        # Put Market Locale (Only supports AX and NYSE)
         if ".AX" in ticker:
             marketindex = "ASX"
+        
+        # Assumes user understands only ASX and NYSE are allowed
         else:
             marketindex = "NYSE"
         
@@ -476,7 +509,12 @@ def sell():
                 new_brokerage = update_brokerage + brokerage
                 existing_value = update_quant * update_avg
                 new_value = amount * price
-                new_avg = round((existing_value - new_value)/(new_quantity),2)
+
+                # Calculates new quantity and avoids zero division error
+                if new_quantity == 0:
+                    new_avg = 0
+                else:
+                    new_avg = round((existing_value - new_value)/(new_quantity),2)
 
                 # Update SQL database
                 cur.execute("UPDATE portfolio SET quantity = ?, brokerage = ?, avgprice = ? WHERE ticker = ? AND user_id = ?", 

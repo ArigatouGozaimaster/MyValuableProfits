@@ -17,6 +17,8 @@
         <div class="content">
             <div class="formBox">
                 <h2>Get Started!</h2>
+                <h4>{{ error_msg }}</h4>
+                <br>
                 <form method="POST" action="">
                         {{ form.hidden_tag() }}
                     <div class="inputbox">
@@ -27,6 +29,7 @@
                         <span>Password</span>
                         {{ form.password(class_='input') }}
                     </div>
+                    <br>
                     <div class="inputbox">
                         {{ form.submit(class_='input') }}
                     </div>

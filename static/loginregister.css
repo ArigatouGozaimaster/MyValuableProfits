@@ -73,6 +73,9 @@ section{
 .formBox{
     width: 50%;
 }
+.formBox h4{
+    color: crimson;
+}
 .formBox h2{
     color: crimson;
     font-weight: 600;
