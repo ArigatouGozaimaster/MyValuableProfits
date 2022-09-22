@@ -141,3 +141,4 @@ cython_debug/
 # Flask session add-on for private user
 /*_session/
 /flask*/
+/flask_session/
