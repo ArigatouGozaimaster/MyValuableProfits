@@ -12,7 +12,8 @@
 
 </head>
 <body>
-    <!-- ___________________Navbar___________________-->
+
+    <!--______________________________________Navbar______________________________________-->
     <nav>
         <div class="container">
             <img src="/static/images/mvp.png" class="logo">
@@ -30,7 +31,7 @@
         </div>
     </nav>
 
-    <!-- ___________________Sidebar___________________-->
+    <!--______________________________________Sidebar_____________________________________-->
     <main>
         <!-- Sidebar Infotab -->
         <aside>
@@ -65,10 +66,11 @@
                 <a href="https://github.com/ArigatouGozaimaster/MyValuableProfits">Source Code</a>
             </div>
         </aside>
-        <!--_______ Middle Infotab - Fetching Live Exchange Rate _______-->
+
+        <!--_______________ Middle Infotab - Fetching Portfolio Overview Info ________________-->
         <section class="content">
             <div class="title">
-                <h1>Performance</h1>
+                <h1>Overview</h1>
             </div>
             <div class="distribution">
                 <div class="mystats1">
@@ -85,19 +87,16 @@
                 </div>
             </div>
             <br>
-            <!-- Removed feature - API for aesthetic website design
-            <div class="exchange">
-                <h1>Exchange Rate</h1>
-                <p>AUD/USD : {{ exchange_rate }}</p>
+            <div class="title">
+                <h1>Portfolio</h1>
             </div>
-            <br>
-            -->
-            <!-- _______Holdings Table_______ -->
+            
+            <!--__________________________________Holdings Table__________________________________-->
             <div id="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <!-- _______Headings for the table_______ -->
+                            <!--__________________________Table Headings__________________________-->
                             <th>Ticker</th>
                             <th>Name</th>
                             <th>Market</th>
@@ -110,7 +109,7 @@
                         </tr>
                     </thead>
                     <tbody> 
-                        <!-- Jinja formatted from app.py /dashboard --> 
+                        <!--____________________________Jinja2 (Python)____________________________--> 
                         {% for i in portfolio_table %}
                         <tr>
                             <td>{{ i[0] }}</td>
@@ -124,27 +123,17 @@
                             <td>{{ i[8] }}</td>
                         </tr>
                         {% endfor %}
-
-                        <!-- Non-formatted for fast loading debugging
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr> 
-                        -->
-
                     </tbody>                    
                 </table>
             </div>
-            <!--_______ Buy Sell Form _______-->
+            <br>
+
+            <!--__________________________________Buy/Sell Form__________________________________-->
             <div id="forms-container">
-                <form action="/buy" method="post" id="buy-form">
+                <div class="title">
+                    <h1>Buy/Sell</h1>
+                </div>
+                <form action="/buy" method="post" id="buy-form" class="form1">
                     <h4>Buy</h4>
                     <div class="form-sub-box">
                         <div class="form-sub-box-2">
@@ -159,7 +148,7 @@
                     <div class="form-sub-box">
                         <div class="form-sub-box-2">
                             <label class="half-label" for="price">Price: </label>
-                            <input class="half-input" autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
+                            <input class="half-input" autocomplete="off" id="price" name="price" placeholder="i.e. 5.00" type="text" required>
                         </div>
                         <div class="form-sub-box-2">
                             <label class="half-label" for="amount">Quantity: </label>
@@ -171,7 +160,7 @@
                     <input type="submit" value="Submit" class="submit-btn">
                 </form>
 
-                <form action="/sell" method="post" id="sell-form" >
+                <form action="/sell" method="post" id="sell-form" class = "form2" >
                     <h4>Sell</h4>
                     <div class="form-sub-box">
                         <div class="form-sub-box-2">
@@ -186,7 +175,7 @@
                     <div class="form-sub-box">
                         <div class="form-sub-box-2">
                             <label class="half-label" for="price">Price: </label>
-                            <input class="half-input" autocomplete="off" id="price" name="price" placeholder="i.e. 10" type="text" required>
+                            <input class="half-input" autocomplete="off" id="price" name="price" placeholder="i.e. 5.00" type="text" required>
                         </div>
                         <div class="form-sub-box-2">
                             <label class="half-label" for="amount">Quantity: </label>

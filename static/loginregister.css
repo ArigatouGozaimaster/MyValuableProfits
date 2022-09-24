@@ -1,5 +1,9 @@
-/* Stylesheet for My Valuable Portfolio */
+/*__________Dashboard CSS Stylisation__________*/
 
+/*_______________Stylised with guides by Arigatou
+Gozaimaster and tcheric _______________________*/
+
+/*______________General Stylisation____________*/
 *{
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
@@ -7,8 +11,7 @@
     box-sizing: border-box;
 }
 
-/* Stylisation for login.html */
-
+/*_________Stylisation for login.html__________*/
 section{
     position: relative;
     width: 100%;

@@ -1,6 +1,9 @@
-/* Dashboard CSS Stylisation */
+/* _________Dashboard CSS Stylisation_________ */
 
-/* Body Stylisation */
+/* ______________Stylised with guides by Arigatou
+Gozaimaster and tcheric _______________________*/
+
+/* ______________Body Stylisation_____________ */
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
@@ -8,7 +11,7 @@ body {
   background-color: lightgrey;
 }
 
-/* _________Header Navbar Stylisation _________ */
+/* ________Header Navbar Stylisation _________ */
 nav{
   width: 100%;
   background-color: white;
@@ -45,6 +48,11 @@ nav img.logo{
   border-width: 0px;
   justify-content: center;
 }
+.search-bar input:focus{
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
 .profile-area{
   position: relative;
   padding-left: 5px;
@@ -78,7 +86,7 @@ nav img.logo{
   color: crimson;
 }
 
-/* _________Sidebar_________ */
+/* __________________Sidebar__________________ */
 main{
   display: grid;
   grid-template-columns: 13rem auto;
@@ -161,13 +169,14 @@ main aside .disclaimer p{
   font-size: 14px;
 }
 
-/* _________Content_________ */
+/* __________________Content__________________ */
 .content .title h1{
-  text-align: center;
+  text-align: left;
   background-color: lightgrey;
   padding-bottom: 20px;
   margin-top: 0;
   margin-bottom: 0;
+  margin-left: 40px;
 }
 .content .distribution{
   display: flex;
@@ -181,6 +190,7 @@ main aside .disclaimer p{
   width: 30%;
   height: 100px;
   text-align: center;
+  border-radius: 40px;
 }
 .content .distribution .mystats1 p{
   margin-top: 5px;
@@ -211,12 +221,16 @@ main aside .disclaimer p{
   text-align: center;
 }
 
-/* _________Portfolio of Stocks_________ */
+/* ____________Portfolio of Stocks____________ */
 #table-container {
   text-align: center;
-  margin-top: 15px;
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
-
 table {
   width: 96%;
   margin: auto;
@@ -227,11 +241,9 @@ table {
   overflow: hidden;
   box-shadow: 3px 0 8px rgba(0,0,0,0.2), -3px 0 8px rgba(0,0,0,0.2);
 }
-
 thead {
   background-color: crimson;
 }
-
 th {
   color: white;
   font-size: 13px;
@@ -241,63 +253,64 @@ th {
   text-align: center;
   width: 9%;
 }
-
 td {
   padding: 10px 12px;
 }
-
 tr {
   border-bottom: 1px solid grey;
 }
-
 tr:nth-of-type(even) {
   background-color: rgb(240,240,240);
 }
-
 tr:last-of-type {
   border-bottom: 2px solid crimson;
 }
 
-/* _________Buy and Sell Forms_________ */
-#forms-container {
-  margin: 30px 5%;
-  display: flex;
-}
+/* ____________Buy and Sell Forms_____________ */
 
-#forms-container form {
+#forms-container .title h1{
+  text-align: left;
+  background-color: lightgrey;
+  padding-bottom: 20px;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 40px;
+}
+#forms-container form{
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-inline: 20px;
-  text-align: left;
-  /* width: 100%; */
   width: 500px;
   height: 270px;
   background-color: white;
   padding: 14px 20px;
   text-align: center;
+  margin-right: 20px;
+  margin-left: 20px;
+  border-radius: 40px;
 }
-
 form label {
   width: 100%;
   margin: 3px 3px;
   color: rgb(35, 35, 35);
 }
-
 form input {
   width: 100%;
   margin-bottom: 5px;
   height: 1.5em;
-  border-radius: 20px;
-  border: 1px solid gray;
   padding: 3px 10px;
+  border: 2px solid #dadada;
+  border-radius: 15px;
 }
-
+form input:focus{
+  outline: none;
+  border-color: #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
+}
 form h4 {
   margin: 0px 0 14px;
 }
-
 form .submit-btn {
   width: 30%;
   margin-inline: auto;
@@ -308,41 +321,37 @@ form .submit-btn {
   color: white;
   height: 30px;
 }
-
 .form-sub-box {
-  /* background-color:green; */
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 60px;
   width: 100%;
 }
-
 .form-sub-box-2 {
   width: 50%;
   padding-left: 8px;
 }
-
 #form-date {
   padding-left: 20px;
 }
-
 #date {
-  /* width: 92%; */
-  /* width:100%; */
   margin-left: 20px;
   margin-right: 7%;
   margin-top: 6px;
   width: 240px;
-  /* margin: auto; */
 }
-
 .half-label {
   margin-top: 5px;
   width: 15%;
 }
-
 .half-input {
   margin-top: 5px;
   width: 86%;
+}
+.form1{
+  float: left;
+}
+.form2{
+  float: right;
 }

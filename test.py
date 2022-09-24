@@ -19,15 +19,13 @@ Testing
 """
 
 # Fetching Current Real-Time Exchange Rate (USD/AUD) 
-"""
 def current_rate():
     AUD = data.DataReader('DEXUSAL', 'fred')
     current_exchange_rate = AUD.DEXUSAL.iat[-1]
     return current_exchange_rate
-"""
+
 
 # Importing Stock Data based on Ticker (Dependant on current_rate)
-"""
 def price_fetch(stock):
     ticker = yf.Ticker(str(stock).upper())
     if ticker.info['regularMarketPrice'] is None:
@@ -40,10 +38,9 @@ def price_fetch(stock):
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
 
 print(price_fetch("qan.ax"))
-"""
+
 
 # Fetching an Exchange Rate from the past 1300 days (LIMIT)
-"""
 def historic_exchange_rate(purchase_date):
     df = data.DataReader('DEXUSAL', 'fred')
     try:
@@ -53,11 +50,9 @@ def historic_exchange_rate(purchase_date):
     return value
 
 print(historic_exchange_rate('2022-09-15'))
-"""
 
 
 # Update database.db
-"""
 con = sqlite3.connect("database.db")
 cur = con.cursor()
 
@@ -73,10 +68,8 @@ CREATE TABLE portfolio(
     buysell TEXT NOT NULL
     );
 DROP TABLE portfolio;
-"""
 
 # Clean up User_id
-"""
 def user_id(input):
     id = re.findall("\d+", input)
     var = ''
@@ -87,10 +80,9 @@ def user_id(input):
 
 tag = ("<User 1>")
 print(user_id(tag))
-"""
+
 
 # Call get stock price function for Jinja2
-"""
 @app.context_processor
 def stockprice():
 
@@ -106,11 +98,11 @@ def stockprice():
             return round(stockprice.info['regularMarketPrice'] / current_rate(), 2)
     
     return dict(get_price = get_price)
-"""
+
 
 # API Key from Alpha Vantage (Unused - does not support ASX)
-"""
-HN490LD4HQWJS4BD
+
+# HN490LD4HQWJS4BD
 
 def alpha_api(ticker):
     ticker = str(ticker).upper()
@@ -120,4 +112,3 @@ def alpha_api(ticker):
     return data
 
 print(alpha_api("qan.ax"))
-"""

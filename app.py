@@ -6,6 +6,7 @@ Import the necessary libraries for the program to run. A full list of requiremen
 under requirements.txt. For more details, consult the attached ReadMe.md
 """
 
+
 import re
 import yfinance as yf
 import sqlite3
@@ -19,6 +20,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
+
 
 """
 Configure Applications
@@ -36,6 +38,7 @@ A list of pre-requisites for functionality
 - Register for an account
 - Register for an account
 """
+
 
 # Initialisation of Flask constructor module and Bcrypt
 app = Flask(__name__, static_url_path='/static')
@@ -108,6 +111,7 @@ A list of helper functions for the functionality of the website
 - Fetching an Exchange Rate from the past 1300 days (LIMIT)
 - Clean up User_id to only return integer
 """
+
 
 # Get LIVE Exchange Rate Data (data.DataReader)
 def current_rate():
@@ -484,6 +488,7 @@ def buy():
 
     return dashboard()
 
+
 @app.route('/sell', methods=['GET', 'POST'])
 @login_required
 def sell():
@@ -605,6 +610,7 @@ def sell():
                 con.commit()
         
     return dashboard()
+
 
 @app.route('/yahoofinance', methods=['GET', 'POST'])
 @login_required
