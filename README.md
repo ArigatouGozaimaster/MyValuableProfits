@@ -4,7 +4,7 @@
 
 Welcome to MyValuableProfits (MVP), a CS50x Final Project submitted as part of the 2022 winter cohort at Harvard University. MVP is a fully functioning and case-tested stock portfolio website, targetted towards Australian shareholders who would like to track (and convert their money back to AUD) in real time using Yahoo Finance API (Web-scrapper) and Panda Datareader Dataform as the AUD/USD API for exchange rates.
 
-![alt text](https://github.com/ArigatouGozaimaster/MyValuableProfits/blob/main/static/images/ganyu_logo.png?raw=true)
+![alt text](https://github.com/ArigatouGozaimaster/MyValuableProfits/blob/main/static/images/SS1.png)
 
 
 ## Table of Contents 
