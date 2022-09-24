@@ -172,7 +172,7 @@ The backend of all url routing including:
 def home():
     """ Redirect user to the login page """
 
-    return login()
+    return render_template('index.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -280,16 +280,27 @@ def dashboard():
         for transaction in list_brokerage:
             total_brokerage += transaction[0]
     
+    # Overall portfolio performance (sum of all returns)
+    overall_performance = 0
+
+    # Total portfolio cost (money expended)
+    portfolio_cost = 0
+    
     # Portfolio Table for dashboard.html
     portfolio_table = []
 
     # Fetch Portfolio Information for current user stored in SQL
-    fetch_database = cur.execute("SELECT ticker, name, market, avgprice, quantity, brokerage FROM portfolio WHERE user_id = ?", (user_name,))
+    fetch_database = cur.execute("SELECT ticker, name, market, avgprice, quantity, brokerage, buysell FROM portfolio WHERE user_id = ?", (user_name,))
     fetch_database = cur.fetchall()
 
     # Sanity check if there are any holdings (at all)
     if fetch_database:
         get_data = list(fetch_database)
+    
+    # Return template for dashboard empty
+    else:
+        return render_template('dashboard.html', user = user_name, portfolio_table = portfolio_table, total_brokerage = total_brokerage,
+                            portfolio_cost = portfolio_cost, overall_performance = overall_performance)
 
     # Append items to the (empty) portfolio 
     for info in get_data:
@@ -322,20 +333,34 @@ def dashboard():
         new_entry.append(total_value)
 
         # Calculate profit/loss
-        delta = round((live_price - info[3]) * info[4], 2)
-        new_entry.append(delta)
+        if total_value == 0:
+            delta = round(float(info[6]), 2)
+            overall_performance += delta
+            new_entry.append(delta)
+        else:
+            delta = round((live_price - info[3]) * info[4], 2)
+            overall_performance += delta
+            new_entry.append(delta)
 
-        # Calculate percentage of profit/loss
-        percentage_delta = round(((live_price - info[3]) / info[3] * 100), 2)
-        new_entry.append(percentage_delta)
-
+        # Calculate percentage of profit/loss (with zero division edge case)
+        if total_value == 0:
+            percentage_delta = 0
+            new_entry.append(percentage_delta)
+        else:
+            percentage_delta = round(((live_price - info[3]) / info[3] * 100), 2)
+            new_entry.append(percentage_delta)
+        
         # Append to the entire portfolio
         portfolio_table.append(new_entry)
 
-    return render_template('dashboard.html', user = user_name, portfolio_table = portfolio_table, total_brokerage = total_brokerage)
+        # Add entry for portfolio cost
+        portfolio_cost += info[4] * average_price
+        portfolio_cost = round(portfolio_cost, 2)
+
+    return render_template('dashboard.html', user = user_name, portfolio_table = portfolio_table, total_brokerage = total_brokerage,
+                            portfolio_cost = portfolio_cost, overall_performance = overall_performance)
 
     
-
 @app.route('/buy', methods=['GET', 'POST'])
 @login_required
 def buy():
@@ -454,7 +479,7 @@ def buy():
 
             # Execute SQL insertion
             cur.execute("INSERT INTO portfolio (user_id, ticker, name, market, avgprice, quantity, brokerage, buysell) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                       (user_name, ticker, company_name, marketindex, price, amount, brokerage, 'buy'))
+                       (user_name, ticker, company_name, marketindex, price, amount, brokerage, 0))
             con.commit()
 
     return dashboard()
@@ -466,10 +491,20 @@ def sell():
     # Fetch information from form
     if request.method == 'POST':
         formdata = request.form
+
+        # Stock ticker 
         ticker = formdata["ticker"].upper()
+
+        # Stock price (avg price sold)
         price = round(float(formdata["price"]),2)
+
+        # Stock quantity sold off (create edge case if quantity = 0)
         amount = float(formdata["amount"])
+
+        # Adjust for brokerage date
         date = formdata["date"]
+
+        # Additional brokerage taken into consideration for overall gains
         brokerage = round(float(formdata["brokerage"]),2)
 
          # Check validity of "Ticker"
@@ -490,8 +525,6 @@ def sell():
         
         # Get full name of stock
         symbol = yf.Ticker(ticker)
-        company_name = symbol.info['longName']
-        print(company_name)
 
         # Adjust for exchange rate
         if not ".AX" in ticker:
@@ -520,41 +553,55 @@ def sell():
         if existing_stock:
 
             # Fetch current existing portfolio details [avgprice]
-            update_avg = cur.execute("SELECT avgprice FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
-            update_avg = cur.fetchone()
-            for number in update_avg:
-                update_avg = number
+            current_avg = cur.execute("SELECT avgprice FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+            current_avg = cur.fetchone()
+            for number in current_avg:
+                current_avg = number
 
             # Fetch current existing portfolio details [quantity]
-            update_quant = cur.execute("SELECT quantity FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
-            update_quant = cur.fetchone()
-            for number in update_quant:
-                update_quant = number
+            current_quant = cur.execute("SELECT quantity FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+            current_quant = cur.fetchone()
+            for number in current_quant:
+                current_quant = number
 
             # Fetch current existing portfolio details [brokerage]
-            update_brokerage = cur.execute("SELECT brokerage FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
-            update_brokerage = cur.fetchone()
-            for number in update_brokerage:
-                update_brokerage = number
+            current_brokerage = cur.execute("SELECT brokerage FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+            current_brokerage = cur.fetchone()
+            for number in current_brokerage:
+                current_brokerage = number
             
             # Validity check that owned stocks >= sold stocks
-            if update_quant >= amount:
+            if current_quant >= amount:
 
-                # Calculate new values for SQL database
-                new_quantity = update_quant - amount
-                new_brokerage = update_brokerage + brokerage
-                existing_value = update_quant * update_avg
+                # Calculate new quantity for database
+                new_quantity = current_quant - amount
+
+                # Helper calculations for new_avg
+                existing_value = current_quant * current_avg
                 new_value = amount * price
 
-                # Calculates new quantity and avoids zero division error
+                # Calculates new avg if quantity = 0 and avoids zero division error
                 if new_quantity == 0:
                     new_avg = 0
                 else:
                     new_avg = round((existing_value - new_value)/(new_quantity),2)
 
+                # Updates new total for brokerage
+                new_brokerage = current_brokerage + brokerage
+                
+                # Fetches current profits/loss from database
+                profit_loss = cur.execute("SELECT buysell FROM portfolio WHERE ticker = ? AND user_id = ?", (ticker, user_name))
+                profit_loss = cur.fetchone()
+                for number in profit_loss:
+                    profit_loss = float(number)
+                
+                # Calculates total profits/loss for new buysell table input
+                live_price = float(price_fetch(ticker))
+                profit_loss += (float(price) - live_price) * float(amount)
+                
                 # Update SQL database
-                cur.execute("UPDATE portfolio SET quantity = ?, brokerage = ?, avgprice = ? WHERE ticker = ? AND user_id = ?", 
-                       (new_quantity, new_brokerage, new_avg, ticker, user_name))
+                cur.execute("UPDATE portfolio SET quantity = ?, brokerage = ?, avgprice = ?, buysell = ? WHERE ticker = ? AND user_id = ?", 
+                       (new_quantity, new_brokerage, new_avg, profit_loss, ticker, user_name))
                 con.commit()
         
     return dashboard()
