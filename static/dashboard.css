@@ -274,10 +274,9 @@ tr:last-of-type {
   /* width: 100%; */
   width: 500px;
   height: 270px;
-  background-color: rgb(240,240,240);
+  background-color: white;
   padding: 14px 20px;
-  border-radius: 25px;
-  border: 1px solid rgb(135, 135, 135);
+  text-align: center;
 }
 
 form label {
