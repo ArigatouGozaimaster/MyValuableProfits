@@ -65,7 +65,7 @@ db = SQLAlchemy(app)
 con = sqlite3.connect('database.db', check_same_thread=False, isolation_level=None)
 cur = con.cursor()
 
-# Login Manager
+# Login Manager fron Flask 7.0 documentation
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
@@ -140,9 +140,10 @@ def price_fetch(stock):
     else:
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
 
+# Allow utilisation of price fetch in HTML Jinja
 app.jinja_env.globals.update(price_fetch = price_fetch)
 
-# Fetching an Exchange Rate from the past 1300 days (LIMIT)
+# Fetching an Exchange Rate from the past 1300 days (LIMIT of API)
 def historic_exchange_rate(purchase_date):
     df = data.DataReader('DEXUSAL', 'fred')
     try:
@@ -178,6 +179,7 @@ The backend of all url routing including:
 @app.route('/')
 def home():
     """ Redirect user to the login page """
+    # TBD:
 
     return render_template('index.html')
 
@@ -304,7 +306,7 @@ def dashboard():
     if fetch_database:
         get_data = list(fetch_database)
     
-    # Return template for dashboard empty
+    # Return template for default dashboard (no holdings at all)
     else:
         return render_template('dashboard.html', user = user_name, portfolio_table = portfolio_table, total_brokerage = total_brokerage,
                             portfolio_cost = portfolio_cost, overall_performance = overall_performance)
@@ -325,7 +327,8 @@ def dashboard():
         new_entry.append(info[2])
 
         # Append stock average price (purchased)
-        average_price = round(info[3], 2)
+        average_price = info[3]
+        average_price = "{:.2f}".format(average_price)
         new_entry.append(average_price)
 
         # Append stock quantity (purchased)
@@ -333,36 +336,56 @@ def dashboard():
 
         # Fetch live stock price of stock
         live_price = float(price_fetch(info[0]))
+        live_price = "{:.2f}".format(live_price)
         new_entry.append(live_price)
 
         # Calculate the total value of holdings (current)
-        total_value = round(live_price * info[4], 2)
+        total_value = round(float(live_price) * info[4], 2)
+        total_value = "{:.2f}".format(total_value)
         new_entry.append(total_value)
 
-        # Calculate profit/loss
+        # Calculate profit/loss (info[6] is buysell - total profits)
         if total_value == 0:
             delta = round(float(info[6]), 2)
             overall_performance += delta
+            delta = "{:.2f}".format(delta)
             new_entry.append(delta)
-        else:
-            delta = round((live_price - info[3]) * info[4], 2)
+        
+        # If the stock is NASDAQ stock (convert to AUD)
+        elif ".AX" not in info[0]:
+            delta = round((float(live_price) / current_rate() - info[3]) * info[4] + float(info[6]), 2)
             overall_performance += delta
+            delta = "{:.2f}".format(delta)
+            new_entry.append(delta)
+
+        # If the stock is Australian
+        else:
+            delta = round((float(live_price) - info[3]) * info[4] + float(info[6]), 2)
+            overall_performance += delta
+            delta = "{:.2f}".format(delta)
             new_entry.append(delta)
 
         # Calculate percentage of profit/loss (with zero division edge case)
-        if total_value == 0:
+        if float(total_value) == 0:
             percentage_delta = 0
             new_entry.append(percentage_delta)
+        
+        # If there exists stocks, calculate a percentage of gains
         else:
-            percentage_delta = round(((live_price - info[3]) / info[3] * 100), 2)
+            percentage_delta = round(((float(live_price) - info[3]) / float(info[3]) * 100), 2)
             new_entry.append(percentage_delta)
         
         # Append to the entire portfolio
         portfolio_table.append(new_entry)
 
         # Add entry for portfolio cost
-        portfolio_cost += info[4] * average_price
+        portfolio_cost += info[4] * float(average_price)
         portfolio_cost = round(portfolio_cost, 2)
+
+        # Format variables to display to 2dp currency
+        overall_performance = "{:.2f}".format(overall_performance)
+        portfolio_cost = "{:.2f}".format(portfolio_cost)
+        total_brokerage = "{:.2f}".format(total_brokerage)
 
     return render_template('dashboard.html', user = user_name, portfolio_table = portfolio_table, total_brokerage = total_brokerage,
                             portfolio_cost = portfolio_cost, overall_performance = overall_performance)
@@ -463,11 +486,19 @@ def buy():
             for number in update_brokerage:
                 update_brokerage = number
 
-            # Calculate new values for SQL database
+            # Calculate updated amount of holdings
             new_quantity = update_quant + amount
+
+            # Calculate new total brokerage spent on holdings
             new_brokerage = update_brokerage + brokerage
+
+            # Calculate the total value of the stocks (existing before POST request)
             existing_value = update_quant * update_avg
+
+            # Calculate the new value of the stocks (user defined from POST request)
             new_value = amount * price
+
+            # Calculate a total new average for all the holdings
             new_avg = round((existing_value + new_value)/(new_quantity),2)
 
             # Sanity Check

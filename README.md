@@ -71,6 +71,9 @@ More features are coming soon! Keep an eye on this repository.
 Planned Features include:
 - Stock purchase history
 - Additional stock support in other regions of the world
+- Loading Screen (for long API wait-time)
+- Permanently delete stocks from dashboard
+- Change username and/or password
 
 ## Credits
 
@@ -112,8 +115,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-
-
-
-
