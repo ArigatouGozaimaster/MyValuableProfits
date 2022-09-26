@@ -52,8 +52,11 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Secret Keys should NEVER be publically accessible to the public - it should be well hidden.
+from secretkey import SECRET_KEY
+app.config['SECRET_KEY'] = SECRET_KEY
+
 # Prepare SQLAlchemy Database
-app.config['SECRET_KEY'] = '$a1teDP@$$w0rd15Very1MP0Rtant'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
@@ -601,8 +604,7 @@ def sell():
                     profit_loss = float(number)
                 
                 # Calculates total profits/loss for new buysell table input
-                live_price = float(price_fetch(ticker))
-                profit_loss += (float(price) - live_price) * float(amount)
+                profit_loss += (float(price) - current_avg) * float(amount)
                 
                 # Update SQL database
                 cur.execute("UPDATE portfolio SET quantity = ?, brokerage = ?, avgprice = ?, buysell = ? WHERE ticker = ? AND user_id = ?", 
