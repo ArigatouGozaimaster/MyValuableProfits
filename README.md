@@ -1,8 +1,9 @@
 # MyValuableProfits (MVP)
 
-## Description
 
-Welcome to MyValuableProfits (MVP), a project submitted as my final project for CS50x 2022, a free and online Harvard University course. MVP is a fully functioning and user-tested stock portfolio website, targeted towards Australian shareholders who would like to track (and convert their money back to AUD) in real time. This program uses the Yahoo Finance API (Web-scrapper) and Panda Datareader Dataform as the AUD/USD API for exchange rates. This was CS50!
+## Introduction
+
+Welcome to MyValuableProfits (MVP), a project created as my final project for CS50x 2022, a free and online Harvard/EdX course. MVP is a fully functioning and user-tested stock portfolio website, targeted towards Australian shareholders who would like to track (and convert their money back to AUD) in real time. This program uses the Yahoo Finance API (Web-scrapper) and Panda Datareader Dataform as the AUD/USD API for exchange rates. Although the load times are on the slower end (due to Yahoo Finance), this project was not geared for speed but rather functionality (although loading times have been optimised!). I hope you enjoy browsing through my project as much as I had fun creating it! This was C$50.
 
 ** Important Note: This stock portfolio is only intended to work for ASX / NYSE stocks. All USD currencies are automatically converted to AUD based on the provided date of acquisition (via exchange rate API in the backend). **
 
@@ -17,13 +18,15 @@ Welcome to MyValuableProfits (MVP), a project submitted as my final project for 
 - [Credits](#credits)
 - [License](#license)
 
+
 ## Installation
 
-MVP is a program created with HTML, CSS, and Jinja2 for the frontend and Flask and Python for the backend. Pandas data.database and YFinance web-scrapper have been used to facilitate (forever free) live stock tracking on the ASX and NYSE. A variety of different APIs have been tested for this program such as IEX, however YFinance was chosen as the unlimited and free web scrapping API. A full list of requirements can be found detailed under requirements.txt, located in the main repository. 
+MVP is a program created with HTML, CSS, and Jinja2 for the frontend and Flask and Python for the backend. Pandas data.database and YFinance web-scrapper have been used to facilitate (forever free) live stock tracking on both the ASX and NYSE. A variety of different APIs have been tested for this program such as IEX, however YFinance was chosen as the unlimited and free web scrapping API. A full list of requirements can be found detailed under requirements.txt, located in the main repository. 
 
 ###### Yahoo Finance API | https://pypi.org/project/yfinance/ 
 
 ###### Pandas DataReader API | https://pandas-datareader.readthedocs.io/en/latest/remote_data.html
+
 
 ## Usage
 
