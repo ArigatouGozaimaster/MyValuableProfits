@@ -46,6 +46,8 @@ The login page follows the same logic and returns an error if a matching account
 ###### Username : admin
 ###### Username : admin
 
+![Login Error](https://github.com/ArigatouGozaimaster/MyValuableProfits/blob/main/static/images/SSlogin_error.png)
+
 ![Login](https://github.com/ArigatouGozaimaster/MyValuableProfits/blob/main/static/images/SSlogin.png)
 
 Landing onto the dashboard page is an empty portfolio. To record a stock, input the information about the stock at the bottom of the page under the buy section. Tickers are based off Yahoo Finance: if a user is unsure, they can enter any string into the searchbar and this will redirect the user to yahoo finance search with the results of the inputted search query.

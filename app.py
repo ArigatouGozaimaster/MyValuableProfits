@@ -40,46 +40,56 @@ A list of pre-requisites for functionality
 """
 
 
-# Initialisation of Flask constructor module and Bcrypt
+# Initialisation of Flask constructor module and Bcrypt.
 app = Flask(__name__, static_url_path='/static')
 bcrypt = Bcrypt(app)
 
-# Ensure templates are auto-reloaded
+
+# Ensure templates are auto-reloaded.
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-# Configure session to use filesystem (instead of signed cookies)
+
+# Configure session to use filesystem (instead of signed cookies) from Flask_Session.
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+
 # Secret Keys should NEVER be publically accessible to the public - it should be well hidden.
+# For this project as an educational demonstration, SECRET_KEY is defined under secretkey.py.
 from secretkey import SECRET_KEY
 app.config['SECRET_KEY'] = SECRET_KEY
 
-# Prepare SQLAlchemy Database
+
+# Prepare SQLAlchemy Database https://www.sqlalchemy.org/.
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
-# Link Database to SQLite3
+
+# Link Database to SQLite3 https://www.sqlite.org/index.html.
 con = sqlite3.connect('database.db', check_same_thread=False, isolation_level=None)
 cur = con.cursor()
 
-# Login Manager fron Flask 7.0 documentation
+
+# Login Manager fron Flask 7.0 documentation https://flask.palletsprojects.com/en/2.2.x/.
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-# Reload the user's object from the user's session
+
+# Reload the user's object from the user's session [ Stack Overflow ]
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 # Configure "user" table in database.db
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(20), nullable = False, unique = True)
     password = db.Column(db.String(80), nullable = False)
+
 
 # Register for an account
 class RegisterForm(FlaskForm):
@@ -93,6 +103,7 @@ class RegisterForm(FlaskForm):
         existing_user_username = User.query.filter_by(username = username.data).first()
         if existing_user_username:
             raise ValidationError("This username is already taken. Please choose a different one")
+
 
 # Login for an account
 class LoginForm(FlaskForm):
@@ -124,6 +135,7 @@ def current_rate():
     current_exchange_rate = AUD.DEXUSAL.iat[-1]
     return current_exchange_rate
 
+
 # Fetch LIVE Stock Price (YFinance)
 def price_fetch(stock):
     ticker = yf.Ticker(str(stock).upper())
@@ -140,6 +152,7 @@ def price_fetch(stock):
     else:
         return round(ticker.info['regularMarketPrice'] / current_rate(), 2)
 
+
 # Allow utilisation of price fetch in HTML Jinja
 app.jinja_env.globals.update(price_fetch = price_fetch)
 
@@ -151,6 +164,7 @@ def historic_exchange_rate(purchase_date):
     except KeyError:
         value = current_rate() 
     return value
+
 
 # Clean up User_id to only return integer
 def user_id(input):
@@ -179,7 +193,7 @@ The backend of all url routing including:
 @app.route('/')
 def home():
     """ Redirect user to the login page """
-    # TBD:
+    # To Be Completed . . .
 
     return render_template('index.html')
 
@@ -347,13 +361,19 @@ def dashboard():
         # Calculate profit/loss (info[6] is buysell - total profits)
         if total_value == 0:
             delta = round(float(info[6]), 2)
+            delta = float(delta)
+            overall_performance = float(overall_performance)
             overall_performance += delta
             delta = "{:.2f}".format(delta)
             new_entry.append(delta)
         
         # If the stock is NASDAQ stock (convert to AUD)
         elif ".AX" not in info[0]:
-            delta = round((float(live_price) / current_rate() - info[3]) * info[4] + float(info[6]), 2)
+            print(float(live_price), info[3], info[4], float(info[6]))
+            delta = round((float(live_price) - info[3]) * info[4] + float(info[6]), 2)
+            delta = float(delta)
+            print(delta)
+            overall_performance = float(overall_performance)
             overall_performance += delta
             delta = "{:.2f}".format(delta)
             new_entry.append(delta)
@@ -361,6 +381,8 @@ def dashboard():
         # If the stock is Australian
         else:
             delta = round((float(live_price) - info[3]) * info[4] + float(info[6]), 2)
+            delta = float(delta)
+            overall_performance = float(overall_performance)
             overall_performance += delta
             delta = "{:.2f}".format(delta)
             new_entry.append(delta)
@@ -379,13 +401,14 @@ def dashboard():
         portfolio_table.append(new_entry)
 
         # Add entry for portfolio cost
+        portfolio_cost = float(portfolio_cost)
         portfolio_cost += info[4] * float(average_price)
         portfolio_cost = round(portfolio_cost, 2)
 
         # Format variables to display to 2dp currency
-        overall_performance = "{:.2f}".format(overall_performance)
-        portfolio_cost = "{:.2f}".format(portfolio_cost)
-        total_brokerage = "{:.2f}".format(total_brokerage)
+        overall_performance = "{:.2f}".format(float(overall_performance))
+        portfolio_cost = "{:.2f}".format(float(portfolio_cost))
+        total_brokerage = "{:.2f}".format(float(total_brokerage))
 
     return render_template('dashboard.html', user = user_name, portfolio_table = portfolio_table, total_brokerage = total_brokerage,
                             portfolio_cost = portfolio_cost, overall_performance = overall_performance)
